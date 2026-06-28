@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Helper - Educational Resources</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0a0f2c;
+      color: #e0e0e0;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* LOADING SCREEN */
+    #loading-screen {
+      position: fixed;
+      inset: 0;
+      background: #0a0f2c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.8s ease;
+    }
+    #loading-screen.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .loading-text {
+      color: #c8e6c9;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* TUX WADDLE ANIMATION */
+    .tux-walk {
+      animation: waddle 0.5s infinite alternate;
+      display: inline-block;
+    }
+    @keyframes waddle {
+      0%   { transform: rotate(-8deg) translateY(0px); }
+      100% { transform: rotate(8deg) translateY(-4px); }
+    }
+
+    /* SNOWFLAKES */
+    .snowflakes { position: fixed; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 0; }
+    .snowflake {
+      position: absolute;
+      top: -20px;
+      color: #fff;
+      font-size: 1rem;
+      opacity: 0.7;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* HEADER */
+    header {
+      position: relative;
+      z-index: 1;
+      background: #0d1440;
+      border-bottom: 2px solid #1a237e;
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.3rem; color: #a5d6a7; }
+    header nav a {
+      color: #90caf9;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 0.9rem;
+    }
+    header nav a:hover { text-decoration: underline; }
+
+    /* MAIN */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 60px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    h2 { font-size: 1.6rem; color: #c8e6c9; margin-bottom: 8px; }
+    p.subtitle { color: #9e9e9e; font-size: 0.95rem; margin-bottom: 40px; }
+
+    /* TUX CONTAINER */
+    .tux-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 30px;
+      cursor: default;
+    }
+
+    /* SPEECH BUBBLE */
+    .speech-bubble {
+      position: absolute;
+      top: -54px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a237e;
+      border: 1px solid #3949ab;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: #1a237e;
+      border-bottom: none;
+    }
+    .speech-bubble.show { opacity: 1; }
+
+    /* EASTER EGG */
+    .easter-egg {
+      position: absolute;
+      bottom: 0;
+      right: -38px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+      title: "psst...";
+    }
+    .easter-egg:hover { transform: scale(1.3) rotate(15deg); }
+    .easter-egg-msg {
+      position: absolute;
+      bottom: 36px;
+      right: -100px;
+      background: #b71c1c;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .easter-egg-msg.show { opacity: 1; }
+
+    /* TUX SVG */
+    .tux-svg { width: 110px; height: auto; display: block; }
+
+    /* SEARCH FORM */
+    .search-form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .search-form input {
+      width: 400px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid #3949ab;
+      background: #0d1440;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+    .search-form input:focus { border-color: #7986cb; }
+    .search-form button {
+      padding: 12px 22px;
+      background: #1b5e20;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .search-form button:hover { background: #2e7d32; }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+    .card {
+      background: #0d1440;
+      border: 1px solid #1a237e;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: left;
+    }
+    .card h3 { color: #a5d6a7; font-size: 1rem; margin-bottom: 6px; }
+    .card p { color: #9e9e9e; font-size: 0.85rem; }
+
+    /* CHRISTMAS BANNER */
+    .xmas-banner {
+      background: #1b0000;
+      border: 1px solid #b71c1c;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 40px;
+      color: #ef9a9a;
+      font-size: 0.9rem;
+    }
+
+    /* DEV AREA */
+    .dev-area {
+      background: #050c1a;
+      border: 1px solid #1a237e;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+      margin-bottom: 40px;
+    }
+    .dev-area h3 { color: #90caf9; margin-bottom: 12px; font-size: 1rem; }
+    .dev-area textarea {
+      width: 100%;
+      height: 200px;
+      background: #0a0f2c;
+      color: #a5d6a7;
+      border: 1px solid #1a237e;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      resize: vertical;
+      outline: none;
+    }
+    .dev-area textarea:focus { border-color: #3949ab; }
+    .dev-area .dev-btns { display: flex; gap: 10px; margin-top: 10px; }
+    .dev-area button {
+      padding: 8px 16px;
+      background: #1a237e;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .dev-area button:hover { background: #283593; }
+    #dev-output {
+      margin-top: 12px;
+      background: #0a0f2c;
+      border: 1px solid #1a237e;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: #fff;
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #424242;
+      font-size: 0.8rem;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="tux-walk">
+    <svg width="100" height="120" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Body -->
+      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
+      <!-- Belly -->
+      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
+      <!-- Head -->
+      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
+      <!-- Face -->
+      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
+      <!-- Eyes -->
+      <circle cx="44" cy="30" r="3.5" fill="white"/>
+      <circle cx="56" cy="30" r="3.5" fill="white"/>
+      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
+      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
+      <!-- Beak -->
+      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
+      <!-- Wings -->
+      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
+      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
+      <!-- Feet -->
+      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <!-- Santa hat -->
+      <polygon points="50,5 30,26 70,26" fill="#c0392b"/>
+      <rect x="28" y="24" width="44" height="7" rx="3" fill="white"/>
+      <circle cx="50" cy="5" r="5" fill="white"/>
+    </svg>
+  </div>
+  <div class="loading-text">🎄 Loading Study Helper... Please wait 🐧</div>
+</div>
+
+<!-- SNOWFLAKES -->
+<div class="snowflakes" id="snowflakes"></div>
+
+<!-- HEADER -->
+<header>
+  <h1>📚 Study Helper</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Resources</a>
+    <a href="#">Tools</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <h2>🎄 Your Educational Resource Hub</h2>
+  <p class="subtitle">Search for study materials, tutorials, and more.</p>
+
+  <div class="xmas-banner">
+    🎅 Happy Holidays from Study Helper! Wishing you a productive and joyful season. 🎁
+  </div>
+
+  <!-- TUX + SEARCH -->
+  <div class="tux-container" id="tuxContainer">
+    <div class="speech-bubble" id="speechBubble">Redirecting to the app site...</div>
+    <!-- Easter egg -->
+    <div class="easter-egg" id="easterEgg" title="Psst...">🥚</div>
+    <div class="easter-egg-msg" id="easterMsg">🐧 Tux says: Happy Hacking!</div>
+    <svg class="tux-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
+      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
+      <circle cx="44" cy="30" r="3.5" fill="white"/>
+      <circle cx="56" cy="30" r="3.5" fill="white"/>
+      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
+      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
+      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
+      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
+      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <polygon points="50,5 30,26 70,26" fill="#c0392b"/>
+      <rect x="28" y="24" width="44" height="7" rx="3" fill="white"/>
+      <circle cx="50" cy="5" r="5" fill="white"/>
+    </svg>
+  </div>
+
+  <form class="search-form" onsubmit="handleSearch(event)">
+    <input type="text" id="searchInput" placeholder="Enter a website or topic..." autocomplete="off"/>
+    <button type="submit">Go</button>
+  </form>
+
+  <div class="cards">
+    <div class="card">
+      <h3>📖 Study Guides</h3>
+      <p>Access thousands of study guides across all subjects.</p>
+    </div>
+    <div class="card">
+      <h3>🧮 Math Tools</h3>
+      <p>Calculators, graphing tools, and step-by-step solvers.</p>
+    </div>
+    <div class="card">
+      <h3>🌍 Research Hub</h3>
+      <p>Find credible sources and citations for your projects.</p>
+    </div>
+  </div>
+
+  <!-- DEV AREA -->
+  <div class="dev-area">
+    <h3>🛠️ Developer Area</h3>
+    <textarea id="devCode" placeholder="// Write your code here...
+console.log('Hello, World!');"></textarea>
+    <div class="dev-btns">
+      <button onclick="runCode()">▶ Run</button>
+      <button onclick="clearCode()">🗑 Clear</button>
+      <button onclick="copyCode()">📋 Copy</button>
+    </div>
+    <div id="dev-output">// Output will appear here...</div>
+  </div>
+</main>
+
+<footer>© 2025 Study Helper — Educational Resources for Students</footer>
+
+<script>
+  // LOADING SCREEN
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loading-screen').classList.add('hide');
+      setTimeout(() => document.getElementById('loading-screen').remove(), 900);
+    }, 2800);
+  });
+
+  // SNOWFLAKES
+  const sf = document.getElementById('snowflakes');
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('div');
+    s.className = 'snowflake';
+    s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+    s.style.left = Math.random()*100 + 'vw';
+    s.style.fontSize = (0.7 + Math.random()*1.1) + 'rem';
+    s.style.animationDuration = (4 + Math.random()*8) + 's';
+    s.style.animationDelay = (Math.random()*8) + 's';
+    sf.appendChild(s);
+  }
+
+  // SEARCH + SPEECH BUBBLE
+  function handleSearch(e) {
+    e.preventDefault();
+    const val = document.getElementById('searchInput').value.trim();
+    if (!val) return;
+    const bubble = document.getElementById('speechBubble');
+    bubble.classList.add('show');
+    setTimeout(() => bubble.classList.remove('show'), 3000);
+    let url = val.startsWith('http') ? val : 'https://' + val;
+    setTimeout(() => window.open(url, '_blank'), 1200);
+  }
+
+  // EASTER EGG
+  const egg = document.getElementById('easterEgg');
+  const eggMsg = document.getElementById('easterMsg');
+  egg.addEventListener('click', () => {
+    eggMsg.classList.toggle('show');
+    setTimeout(() => eggMsg.classList.remove('show'), 3000);
+  });
+
+  // DEV AREA
+  function runCode() {
+    const code = document.getElementById('devCode').value;
+    const out = document.getElementById('dev-output');
+    const logs = [];
+    const origLog = console.log;
+    console.log = (...args) => logs.push(args.join(' '));
+    try {
+      eval(code);
+      out.textContent = logs.length ? logs.join('\n') : '// No output';
+    } catch(e) {
+      out.textContent = '❌ Error: ' + e.message;
+    }
+    console.log = origLog;
+  }
+
+  function clearCode() {
+    document.getElementById('devCode').value = '';
+    document.getElementById('dev-output').textContent = '// Output will appear here...';
+  }
+
+  function copyCode() {
+    const code = document.getElementById('devCode').value;
+    navigator.clipboard.writeText(code).then(() => alert('Code copied!'));
+  }
+</script>
+</body>
+</html>
