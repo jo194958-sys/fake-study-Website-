@@ -121,38 +121,118 @@
     .calc-btn.num:hover { background: #283593; }
     .calc-btn.op { background: #1b5e20; color: #fff; }
     .calc-btn.op:hover { background: #2e7d32; }
-    .calc-btn.eq { background: #b71c1c; color: #fff; grid-column: span 2; }
+    .calc-btn.eq { background: #b71c1c; color: #fff; }
     .calc-btn.eq:hover { background: #c62828; }
     .calc-btn.clr { background: #4a148c; color: #fff; }
     .calc-btn.clr:hover { background: #6a1b9a; }
 
-    /* PROXY MODAL */
-    #proxy-modal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-      z-index: 999; align-items: center; justify-content: center; flex-direction: column;
+    /* ===================== SUMMER PROXY OVERLAY ===================== */
+    #proxy-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 9998;
+      background: linear-gradient(180deg, #87ceeb 0%, #ffe066 60%, #f4a460 100%);
+      overflow: hidden;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    #proxy-modal.show { display: flex; }
+    #proxy-overlay.show { display: flex; }
+
+    /* Sun */
+    .summer-sun {
+      position: absolute; top: 30px; right: 60px;
+      width: 90px; height: 90px;
+      background: #FFD700;
+      border-radius: 50%;
+      box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3);
+      animation: pulse-sun 3s ease-in-out infinite;
+    }
+    @keyframes pulse-sun {
+      0%, 100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); }
+      50% { box-shadow: 0 0 60px 30px #ffe566, 0 0 100px 60px rgba(255,220,0,0.2); }
+    }
+
+    /* Clouds */
+    .cloud {
+      position: absolute; background: white; border-radius: 50px; opacity: 0.85;
+      animation: drift linear infinite;
+    }
+    .cloud::before, .cloud::after {
+      content: ''; position: absolute; background: white; border-radius: 50%;
+    }
+    @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
+
+    /* Waves */
+    .waves {
+      position: absolute; bottom: 0; left: 0; width: 100%;
+      height: 120px; overflow: hidden;
+    }
+    .wave {
+      position: absolute; bottom: 0; width: 200%; height: 100px;
+      background: rgba(30,144,255,0.5);
+      border-radius: 40%;
+      animation: wave-move linear infinite;
+    }
+    .wave1 { animation-duration: 4s; opacity: 0.7; background: rgba(30,144,255,0.6); }
+    .wave2 { animation-duration: 6s; opacity: 0.5; background: rgba(100,180,255,0.5); bottom: 10px; }
+    @keyframes wave-move {
+      0% { transform: translateX(0) rotate(0deg); }
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* Tux in sunglasses */
+    .summer-tux {
+      animation: tux-bob 1.5s ease-in-out infinite;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25));
+    }
+    @keyframes tux-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Proxy box */
     .proxy-box {
-      background: #0d1440; border: 2px solid #3949ab; border-radius: 16px;
-      padding: 36px; text-align: center; max-width: 500px; width: 90%;
+      position: relative; z-index: 2;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 20px;
+      padding: 36px 40px;
+      text-align: center;
+      max-width: 480px; width: 90%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     }
-    .proxy-box h2 { color: #a5d6a7; margin-bottom: 10px; }
-    .proxy-box p { color: #9e9e9e; font-size: 0.9rem; margin-bottom: 20px; }
+    .proxy-box h2 { color: #1a1a1a; font-size: 1.6rem; margin-bottom: 6px; }
+    .proxy-box p { color: #333; font-size: 0.9rem; margin-bottom: 20px; }
     .proxy-box input {
-      width: 100%; padding: 12px 16px; border-radius: 8px;
-      border: 1px solid #3949ab; background: #0a0f2c; color: #fff;
-      font-size: 1rem; outline: none; margin-bottom: 14px;
+      width: 100%; padding: 12px 16px; border-radius: 10px;
+      border: 2px solid rgba(255,140,0,0.5); background: rgba(255,255,255,0.8);
+      color: #1a1a1a; font-size: 1rem; outline: none; margin-bottom: 14px;
     }
-    .proxy-box input:focus { border-color: #7986cb; }
-    .proxy-box .btns { display: flex; gap: 10px; justify-content: center; }
-    .proxy-box button {
-      padding: 10px 24px; border: none; border-radius: 8px;
-      cursor: pointer; font-size: 0.95rem; transition: background 0.2s;
+    .proxy-box input:focus { border-color: #ff8c00; }
+    .proxy-btns { display: flex; gap: 10px; justify-content: center; }
+    .proxy-go {
+      padding: 10px 28px; border: none; border-radius: 10px;
+      background: #ff8c00; color: #fff; font-size: 1rem; cursor: pointer;
+      font-weight: bold; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,140,0,0.4);
     }
-    .proxy-go { background: #1b5e20; color: #fff; }
-    .proxy-go:hover { background: #2e7d32; }
-    .proxy-close { background: #4a148c; color: #fff; }
-    .proxy-close:hover { background: #6a1b9a; }
+    .proxy-go:hover { background: #e67e00; }
+    .proxy-close {
+      padding: 10px 28px; border: none; border-radius: 10px;
+      background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .proxy-close:hover { background: rgba(0,0,0,0.35); }
+
+    /* Floating emojis */
+    .float-emoji {
+      position: absolute; font-size: 2rem; animation: floaty linear infinite; pointer-events: none;
+    }
+    @keyframes floaty {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
 
     /* DEV AREA */
     .dev-area {
@@ -211,16 +291,73 @@
 <!-- SNOWFLAKES -->
 <div class="snowflakes" id="snowflakes"></div>
 
-<!-- PROXY MODAL -->
-<div id="proxy-modal" class="show" style="display:none">
+<!-- ===== SUMMER PROXY OVERLAY ===== -->
+<div id="proxy-overlay">
+  <!-- Sun -->
+  <div class="summer-sun"></div>
+
+  <!-- Clouds -->
+  <div class="cloud" style="width:120px;height:40px;top:60px;left:-50px;animation-duration:18s;animation-delay:0s;">
+    <div style="width:60px;height:60px;top:-30px;left:15px;position:absolute;background:white;border-radius:50%;"></div>
+    <div style="width:40px;height:40px;top:-18px;left:50px;position:absolute;background:white;border-radius:50%;"></div>
+  </div>
+  <div class="cloud" style="width:90px;height:30px;top:120px;left:-30px;animation-duration:24s;animation-delay:6s;">
+    <div style="width:45px;height:45px;top:-22px;left:10px;position:absolute;background:white;border-radius:50%;"></div>
+    <div style="width:30px;height:30px;top:-12px;left:40px;position:absolute;background:white;border-radius:50%;"></div>
+  </div>
+
+  <!-- Floating emojis -->
+  <span class="float-emoji" style="left:8%;animation-duration:6s;animation-delay:0s;">🌊</span>
+  <span class="float-emoji" style="left:20%;animation-duration:8s;animation-delay:1s;">🌴</span>
+  <span class="float-emoji" style="left:75%;animation-duration:7s;animation-delay:2s;">🏖️</span>
+  <span class="float-emoji" style="left:88%;animation-duration:9s;animation-delay:0.5s;">☀️</span>
+  <span class="float-emoji" style="left:50%;animation-duration:10s;animation-delay:3s;">🍦</span>
+  <span class="float-emoji" style="left:35%;animation-duration:7s;animation-delay:4s;">🐚</span>
+
+  <!-- Tux with sunglasses -->
+  <div class="summer-tux">
+    <svg width="90" height="110" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
+      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
+      <circle cx="44" cy="30" r="3.5" fill="white"/>
+      <circle cx="56" cy="30" r="3.5" fill="white"/>
+      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
+      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
+      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
+      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
+      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
+      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
+      <!-- Sunglasses -->
+      <rect x="34" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
+      <rect x="52" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
+      <line x1="48" y1="31" x2="52" y2="31" stroke="#FFD700" stroke-width="1.5"/>
+      <line x1="30" y1="30" x2="34" y2="30" stroke="#FFD700" stroke-width="1.5"/>
+      <line x1="66" y1="30" x2="70" y2="30" stroke="#FFD700" stroke-width="1.5"/>
+      <!-- Sun hat -->
+      <ellipse cx="50" cy="16" rx="24" ry="5" fill="#f5c842"/>
+      <rect x="36" y="5" width="28" height="14" rx="4" fill="#f5c842"/>
+      <rect x="34" y="13" width="32" height="4" rx="2" fill="#ff8c00"/>
+    </svg>
+  </div>
+
+  <!-- Proxy Box -->
   <div class="proxy-box">
-    <h2>🐧 Proxy Unlocked!</h2>
-    <p>Enter a URL to navigate to it freely.</p>
+    <h2>☀️ Summer Mode Unlocked!</h2>
+    <p>🌊 Enter a URL and surf the web freely 🏄</p>
     <input type="text" id="proxy-url" placeholder="e.g. google.com" />
-    <div class="btns">
-      <button class="proxy-go" onclick="goProxy()">Go</button>
+    <div class="proxy-btns">
+      <button class="proxy-go" onclick="goProxy()">🏄 Surf</button>
       <button class="proxy-close" onclick="closeProxy()">Close</button>
     </div>
+  </div>
+
+  <!-- Waves -->
+  <div class="waves">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
   </div>
 </div>
 
@@ -244,7 +381,7 @@
   </div>
 
   <!-- TUX + SEARCH -->
-  <div class="tux-container" id="tuxContainer">
+  <div class="tux-container">
     <div class="speech-bubble" id="speechBubble">Redirecting to the app site...</div>
     <div class="easter-egg" id="easterEgg" title="Psst...">🥚</div>
     <div class="easter-egg-msg" id="easterMsg">🐧 Tux says: Happy Hacking!</div>
@@ -288,25 +425,21 @@
       <button class="calc-btn op" onclick="calcInput('(')">(</button>
       <button class="calc-btn op" onclick="calcInput(')')">)</button>
       <button class="calc-btn op" onclick="calcInput('/')">÷</button>
-
       <button class="calc-btn num" onclick="calcInput('7')">7</button>
       <button class="calc-btn num" onclick="calcInput('8')">8</button>
       <button class="calc-btn num" onclick="calcInput('9')">9</button>
       <button class="calc-btn op" onclick="calcInput('*')">×</button>
-
       <button class="calc-btn num" onclick="calcInput('4')">4</button>
       <button class="calc-btn num" onclick="calcInput('5')">5</button>
       <button class="calc-btn num" onclick="calcInput('6')">6</button>
       <button class="calc-btn op" onclick="calcInput('-')">−</button>
-
       <button class="calc-btn num" onclick="calcInput('1')">1</button>
       <button class="calc-btn num" onclick="calcInput('2')">2</button>
       <button class="calc-btn num" onclick="calcInput('3')">3</button>
       <button class="calc-btn op" onclick="calcInput('+')">+</button>
-
       <button class="calc-btn num" onclick="calcInput('0')" style="grid-column:span 2">0</button>
       <button class="calc-btn num" onclick="calcInput('.')">.</button>
-      <button class="calc-btn eq" onclick="calcEquals()" style="grid-column:span 1">=</button>
+      <button class="calc-btn eq" onclick="calcEquals()">=</button>
     </div>
   </div>
 
@@ -370,14 +503,13 @@ console.log('Hello, World!');"></textarea>
   // CALCULATOR
   let calcVal = '';
   function calcInput(val) {
-    if (calcVal === '0' && val !== '.') calcVal = '';
+    if (calcVal === '0' && !isNaN(val)) calcVal = '';
     calcVal += val;
     document.getElementById('calc-display').textContent = calcVal;
-    // SECRET CODE: type 2222 to unlock proxy
     if (calcVal.includes('2222')) {
       calcVal = '';
       document.getElementById('calc-display').textContent = '0';
-      setTimeout(() => document.getElementById('proxy-modal').classList.add('show'), 300);
+      setTimeout(() => document.getElementById('proxy-overlay').classList.add('show'), 300);
     }
   }
   function calcClear() {
@@ -394,7 +526,7 @@ console.log('Hello, World!');"></textarea>
     }
   }
 
-  // PROXY MODAL
+  // PROXY
   function goProxy() {
     let url = document.getElementById('proxy-url').value.trim();
     if (!url) return;
@@ -402,7 +534,7 @@ console.log('Hello, World!');"></textarea>
     window.open(url, '_blank');
   }
   function closeProxy() {
-    document.getElementById('proxy-modal').classList.remove('show');
+    document.getElementById('proxy-overlay').classList.remove('show');
     document.getElementById('proxy-url').value = '';
   }
   document.getElementById('proxy-url').addEventListener('keydown', e => {
