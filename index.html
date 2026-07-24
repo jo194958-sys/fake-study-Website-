@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Study Helper - Educational Resources</title>
+  <link rel="icon" id="tab-icon" href="https://www.google.com/favicon.ico"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -126,81 +127,37 @@
     .calc-btn.clr { background: #4a148c; color: #fff; }
     .calc-btn.clr:hover { background: #6a1b9a; }
 
-    /* ===================== SUMMER PROXY OVERLAY ===================== */
+    /* ===== SUMMER PROXY OVERLAY ===== */
     #proxy-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 9998;
+      display: none; position: fixed; inset: 0; z-index: 9998;
       background: linear-gradient(180deg, #87ceeb 0%, #ffe066 60%, #f4a460 100%);
-      overflow: hidden;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden; flex-direction: column; align-items: center; justify-content: center;
     }
     #proxy-overlay.show { display: flex; }
-
-    /* Sun */
     .summer-sun {
-      position: absolute; top: 30px; right: 60px;
-      width: 90px; height: 90px;
-      background: #FFD700;
-      border-radius: 50%;
+      position: absolute; top: 30px; right: 60px; width: 90px; height: 90px;
+      background: #FFD700; border-radius: 50%;
       box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3);
       animation: pulse-sun 3s ease-in-out infinite;
     }
     @keyframes pulse-sun {
-      0%, 100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); }
+      0%,100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); }
       50% { box-shadow: 0 0 60px 30px #ffe566, 0 0 100px 60px rgba(255,220,0,0.2); }
     }
-
-    /* Clouds */
-    .cloud {
-      position: absolute; background: white; border-radius: 50px; opacity: 0.85;
-      animation: drift linear infinite;
-    }
-    .cloud::before, .cloud::after {
-      content: ''; position: absolute; background: white; border-radius: 50%;
-    }
+    .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.85; animation: drift linear infinite; }
     @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
-
-    /* Waves */
-    .waves {
-      position: absolute; bottom: 0; left: 0; width: 100%;
-      height: 120px; overflow: hidden;
-    }
-    .wave {
-      position: absolute; bottom: 0; width: 200%; height: 100px;
-      background: rgba(30,144,255,0.5);
-      border-radius: 40%;
-      animation: wave-move linear infinite;
-    }
+    .waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; overflow: hidden; }
+    .wave { position: absolute; bottom: 0; width: 200%; height: 100px; border-radius: 40%; animation: wave-move linear infinite; }
     .wave1 { animation-duration: 4s; opacity: 0.7; background: rgba(30,144,255,0.6); }
     .wave2 { animation-duration: 6s; opacity: 0.5; background: rgba(100,180,255,0.5); bottom: 10px; }
-    @keyframes wave-move {
-      0% { transform: translateX(0) rotate(0deg); }
-      100% { transform: translateX(-50%) rotate(360deg); }
-    }
-
-    /* Tux in sunglasses */
-    .summer-tux {
-      animation: tux-bob 1.5s ease-in-out infinite;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25));
-    }
-    @keyframes tux-bob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* Proxy box */
+    @keyframes wave-move { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
+    .summer-tux { animation: tux-bob 1.5s ease-in-out infinite; margin-bottom: 10px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25)); }
+    @keyframes tux-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .proxy-box {
       position: relative; z-index: 2;
-      background: rgba(255,255,255,0.25);
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255,255,255,0.6);
-      border-radius: 20px;
-      padding: 36px 40px;
-      text-align: center;
-      max-width: 480px; width: 90%;
+      background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.6); border-radius: 20px;
+      padding: 36px 40px; text-align: center; max-width: 480px; width: 90%;
       box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     }
     .proxy-box h2 { color: #1a1a1a; font-size: 1.6rem; margin-bottom: 6px; }
@@ -211,7 +168,7 @@
       color: #1a1a1a; font-size: 1rem; outline: none; margin-bottom: 14px;
     }
     .proxy-box input:focus { border-color: #ff8c00; }
-    .proxy-btns { display: flex; gap: 10px; justify-content: center; }
+    .proxy-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
     .proxy-go {
       padding: 10px 28px; border: none; border-radius: 10px;
       background: #ff8c00; color: #fff; font-size: 1rem; cursor: pointer;
@@ -220,19 +177,36 @@
     .proxy-go:hover { background: #e67e00; }
     .proxy-close {
       padding: 10px 28px; border: none; border-radius: 10px;
-      background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem;
-      cursor: pointer; transition: background 0.2s;
+      background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem; cursor: pointer; transition: background 0.2s;
     }
     .proxy-close:hover { background: rgba(0,0,0,0.35); }
+    .float-emoji { position: absolute; font-size: 2rem; animation: floaty linear infinite; pointer-events: none; }
+    @keyframes floaty { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity:0; } }
 
-    /* Floating emojis */
-    .float-emoji {
-      position: absolute; font-size: 2rem; animation: floaty linear infinite; pointer-events: none;
+    /* ===== TAB CLOAK PANEL (inside proxy box) ===== */
+    .cloak-panel {
+      margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.15); padding-top: 14px; text-align: left;
     }
-    @keyframes floaty {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    .cloak-panel h4 { font-size: 0.85rem; color: #333; margin-bottom: 10px; font-weight: 600; }
+    .cloak-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .cloak-btn {
+      padding: 6px 12px; border: 2px solid transparent; border-radius: 8px;
+      background: rgba(255,255,255,0.5); color: #1a1a1a; font-size: 0.78rem;
+      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px;
     }
+    .cloak-btn:hover { background: rgba(255,255,255,0.8); }
+    .cloak-btn.active { border-color: #ff8c00; background: rgba(255,140,0,0.15); font-weight: bold; }
+    .cloak-custom { display: flex; gap: 6px; margin-top: 4px; }
+    .cloak-custom input {
+      flex: 1; padding: 6px 10px; border-radius: 8px;
+      border: 1px solid rgba(255,140,0,0.4); background: rgba(255,255,255,0.7);
+      color: #1a1a1a; font-size: 0.8rem; outline: none; margin-bottom: 0;
+    }
+    .cloak-custom button {
+      padding: 6px 12px; border: none; border-radius: 8px;
+      background: #1a237e; color: #fff; font-size: 0.78rem; cursor: pointer;
+    }
+    .cloak-custom button:hover { background: #283593; }
 
     /* DEV AREA */
     .dev-area {
@@ -293,11 +267,8 @@
 
 <!-- ===== SUMMER PROXY OVERLAY ===== -->
 <div id="proxy-overlay">
-  <!-- Sun -->
   <div class="summer-sun"></div>
-
-  <!-- Clouds -->
-  <div class="cloud" style="width:120px;height:40px;top:60px;left:-50px;animation-duration:18s;animation-delay:0s;">
+  <div class="cloud" style="width:120px;height:40px;top:60px;left:-50px;animation-duration:18s;">
     <div style="width:60px;height:60px;top:-30px;left:15px;position:absolute;background:white;border-radius:50%;"></div>
     <div style="width:40px;height:40px;top:-18px;left:50px;position:absolute;background:white;border-radius:50%;"></div>
   </div>
@@ -305,16 +276,13 @@
     <div style="width:45px;height:45px;top:-22px;left:10px;position:absolute;background:white;border-radius:50%;"></div>
     <div style="width:30px;height:30px;top:-12px;left:40px;position:absolute;background:white;border-radius:50%;"></div>
   </div>
-
-  <!-- Floating emojis -->
-  <span class="float-emoji" style="left:8%;animation-duration:6s;animation-delay:0s;">🌊</span>
+  <span class="float-emoji" style="left:8%;animation-duration:6s;">🌊</span>
   <span class="float-emoji" style="left:20%;animation-duration:8s;animation-delay:1s;">🌴</span>
   <span class="float-emoji" style="left:75%;animation-duration:7s;animation-delay:2s;">🏖️</span>
   <span class="float-emoji" style="left:88%;animation-duration:9s;animation-delay:0.5s;">☀️</span>
   <span class="float-emoji" style="left:50%;animation-duration:10s;animation-delay:3s;">🍦</span>
   <span class="float-emoji" style="left:35%;animation-duration:7s;animation-delay:4s;">🐚</span>
 
-  <!-- Tux with sunglasses -->
   <div class="summer-tux">
     <svg width="90" height="110" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
@@ -330,20 +298,17 @@
       <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
       <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
       <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <!-- Sunglasses -->
       <rect x="34" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
       <rect x="52" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
       <line x1="48" y1="31" x2="52" y2="31" stroke="#FFD700" stroke-width="1.5"/>
       <line x1="30" y1="30" x2="34" y2="30" stroke="#FFD700" stroke-width="1.5"/>
       <line x1="66" y1="30" x2="70" y2="30" stroke="#FFD700" stroke-width="1.5"/>
-      <!-- Sun hat -->
       <ellipse cx="50" cy="16" rx="24" ry="5" fill="#f5c842"/>
       <rect x="36" y="5" width="28" height="14" rx="4" fill="#f5c842"/>
       <rect x="34" y="13" width="32" height="4" rx="2" fill="#ff8c00"/>
     </svg>
   </div>
 
-  <!-- Proxy Box -->
   <div class="proxy-box">
     <h2>☀️ Summer Mode Unlocked!</h2>
     <p>🌊 Enter a URL and surf the web freely 🏄</p>
@@ -352,9 +317,40 @@
       <button class="proxy-go" onclick="goProxy()">🏄 Surf</button>
       <button class="proxy-close" onclick="closeProxy()">Close</button>
     </div>
+
+    <!-- TAB CLOAK PANEL -->
+    <div class="cloak-panel">
+      <h4>🎭 Tab Cloak — disguise this tab</h4>
+      <div class="cloak-options">
+        <button class="cloak-btn active" onclick="setCloak('Study Helper - Educational Resources','https://www.google.com/favicon.ico',this)">
+          📚 Default
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Google','https://www.google.com/favicon.ico',this)">
+          🔍 Google
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Khan Academy','https://cdn.kastatic.org/images/favicon.ico',this)">
+          🎓 Khan Academy
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Google Classroom','https://ssl.gstatic.com/classroom/favicon.png',this)">
+          🏫 Google Classroom
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Quizlet','https://quizlet.com/favicon.ico',this)">
+          📝 Quizlet
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Duolingo','https://d35aaqx5ub95lt.cloudfront.net/favicon.ico',this)">
+          🦜 Duolingo
+        </button>
+        <button class="cloak-btn" onclick="setCloak('Wikipedia','https://en.wikipedia.org/favicon.ico',this)">
+          📖 Wikipedia
+        </button>
+      </div>
+      <div class="cloak-custom">
+        <input type="text" id="custom-cloak-title" placeholder="Custom tab title..." />
+        <button onclick="applyCustomCloak()">Apply</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Waves -->
   <div class="waves">
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
@@ -540,6 +536,23 @@ console.log('Hello, World!');"></textarea>
   document.getElementById('proxy-url').addEventListener('keydown', e => {
     if (e.key === 'Enter') goProxy();
   });
+
+  // TAB CLOAK
+  function setCloak(title, iconUrl, btn) {
+    document.title = title;
+    const icon = document.getElementById('tab-icon');
+    icon.href = iconUrl;
+    // mark active button
+    document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  function applyCustomCloak() {
+    const title = document.getElementById('custom-cloak-title').value.trim();
+    if (!title) return;
+    setCloak(title, 'https://www.google.com/favicon.ico', null);
+    document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
+  }
 
   // DEV AREA
   function runCode() {
