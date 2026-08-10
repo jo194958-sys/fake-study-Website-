@@ -8,11 +8,8 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background-color: #0a0f2c;
-      color: #e0e0e0;
-      font-family: 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
+      background-color: #0a0f2c; color: #e0e0e0;
+      font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden;
     }
 
     /* LOADING SCREEN */
@@ -24,23 +21,16 @@
     #loading-screen.hide { opacity: 0; pointer-events: none; }
     .loading-text { color: #c8e6c9; font-size: 1.1rem; margin-top: 20px; letter-spacing: 1px; }
     .tux-walk { animation: waddle 0.5s infinite alternate; display: inline-block; }
-    @keyframes waddle {
-      0% { transform: rotate(-8deg) translateY(0px); }
-      100% { transform: rotate(8deg) translateY(-4px); }
-    }
+    @keyframes waddle { 0% { transform: rotate(-8deg) translateY(0px); } 100% { transform: rotate(8deg) translateY(-4px); } }
 
     /* SNOWFLAKES */
     .snowflakes { position: fixed; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 0; }
-    .snowflake {
-      position: absolute; top: -20px; color: #fff; font-size: 1rem; opacity: 0.7;
-      animation: fall linear infinite;
-    }
+    .snowflake { position: absolute; top: -20px; color: #fff; font-size: 1rem; opacity: 0.7; animation: fall linear infinite; }
     @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
 
     /* HEADER */
     header {
-      position: relative; z-index: 1;
-      background: #0d1440; border-bottom: 2px solid #1a237e;
+      position: relative; z-index: 1; background: #0d1440; border-bottom: 2px solid #1a237e;
       padding: 12px 30px; display: flex; align-items: center; justify-content: space-between;
     }
     header h1 { font-size: 1.3rem; color: #a5d6a7; }
@@ -101,22 +91,11 @@
     }
 
     /* CALCULATOR */
-    .calc-section {
-      background: #050c1a; border: 1px solid #1a237e; border-radius: 12px;
-      padding: 24px; margin-bottom: 40px; text-align: left;
-    }
+    .calc-section { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; margin-bottom: 40px; text-align: left; }
     .calc-section h3 { color: #90caf9; margin-bottom: 16px; font-size: 1rem; }
-    .calc-display {
-      background: #0a0f2c; border: 1px solid #3949ab; border-radius: 8px;
-      padding: 14px 16px; font-size: 1.6rem; color: #a5d6a7;
-      text-align: right; margin-bottom: 12px; min-height: 54px;
-      font-family: 'Courier New', monospace; letter-spacing: 2px;
-    }
+    .calc-display { background: #0a0f2c; border: 1px solid #3949ab; border-radius: 8px; padding: 14px 16px; font-size: 1.6rem; color: #a5d6a7; text-align: right; margin-bottom: 12px; min-height: 54px; font-family: 'Courier New', monospace; letter-spacing: 2px; }
     .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .calc-btn {
-      padding: 16px; border: none; border-radius: 8px; font-size: 1.1rem;
-      cursor: pointer; transition: background 0.15s, transform 0.1s;
-    }
+    .calc-btn { padding: 16px; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: background 0.15s, transform 0.1s; }
     .calc-btn:active { transform: scale(0.95); }
     .calc-btn.num { background: #1a237e; color: #fff; }
     .calc-btn.num:hover { background: #283593; }
@@ -127,7 +106,7 @@
     .calc-btn.clr { background: #4a148c; color: #fff; }
     .calc-btn.clr:hover { background: #6a1b9a; }
 
-    /* ===== SUMMER PROXY OVERLAY ===== */
+    /* SUMMER PROXY OVERLAY */
     #proxy-overlay {
       display: none; position: fixed; inset: 0; z-index: 9998;
       background: linear-gradient(180deg, #87ceeb 0%, #ffe066 60%, #f4a460 100%);
@@ -140,10 +119,7 @@
       box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3);
       animation: pulse-sun 3s ease-in-out infinite;
     }
-    @keyframes pulse-sun {
-      0%,100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); }
-      50% { box-shadow: 0 0 60px 30px #ffe566, 0 0 100px 60px rgba(255,220,0,0.2); }
-    }
+    @keyframes pulse-sun { 0%,100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); } 50% { box-shadow: 0 0 60px 30px #ffe566, 0 0 100px 60px rgba(255,220,0,0.2); } }
     .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.85; animation: drift linear infinite; }
     @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
     .waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; overflow: hidden; }
@@ -154,83 +130,77 @@
     .summer-tux { animation: tux-bob 1.5s ease-in-out infinite; margin-bottom: 10px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25)); }
     @keyframes tux-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     .proxy-box {
-      position: relative; z-index: 2;
-      background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);
-      border: 2px solid rgba(255,255,255,0.6); border-radius: 20px;
-      padding: 36px 40px; text-align: center; max-width: 480px; width: 90%;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+      position: relative; z-index: 2; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,0.6); border-radius: 20px; padding: 36px 40px;
+      text-align: center; max-width: 480px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     }
     .proxy-box h2 { color: #1a1a1a; font-size: 1.6rem; margin-bottom: 6px; }
     .proxy-box p { color: #333; font-size: 0.9rem; margin-bottom: 20px; }
-    .proxy-box input {
-      width: 100%; padding: 12px 16px; border-radius: 10px;
-      border: 2px solid rgba(255,140,0,0.5); background: rgba(255,255,255,0.8);
-      color: #1a1a1a; font-size: 1rem; outline: none; margin-bottom: 14px;
-    }
+    .proxy-box input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 2px solid rgba(255,140,0,0.5); background: rgba(255,255,255,0.8); color: #1a1a1a; font-size: 1rem; outline: none; margin-bottom: 14px; }
     .proxy-box input:focus { border-color: #ff8c00; }
     .proxy-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .proxy-go {
-      padding: 10px 28px; border: none; border-radius: 10px;
-      background: #ff8c00; color: #fff; font-size: 1rem; cursor: pointer;
-      font-weight: bold; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,140,0,0.4);
-    }
+    .proxy-go { padding: 10px 28px; border: none; border-radius: 10px; background: #ff8c00; color: #fff; font-size: 1rem; cursor: pointer; font-weight: bold; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,140,0,0.4); }
     .proxy-go:hover { background: #e67e00; }
-    .proxy-close {
-      padding: 10px 28px; border: none; border-radius: 10px;
-      background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem; cursor: pointer; transition: background 0.2s;
-    }
+    .proxy-close { padding: 10px 28px; border: none; border-radius: 10px; background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
     .proxy-close:hover { background: rgba(0,0,0,0.35); }
     .float-emoji { position: absolute; font-size: 2rem; animation: floaty linear infinite; pointer-events: none; }
     @keyframes floaty { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity:0; } }
 
-    /* ===== TAB CLOAK PANEL (inside proxy box) ===== */
-    .cloak-panel {
-      margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.15); padding-top: 14px; text-align: left;
-    }
+    /* TAB CLOAK */
+    .cloak-panel { margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.15); padding-top: 14px; text-align: left; }
     .cloak-panel h4 { font-size: 0.85rem; color: #333; margin-bottom: 10px; font-weight: 600; }
     .cloak-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-    .cloak-btn {
-      padding: 6px 12px; border: 2px solid transparent; border-radius: 8px;
-      background: rgba(255,255,255,0.5); color: #1a1a1a; font-size: 0.78rem;
-      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px;
-    }
+    .cloak-btn { padding: 6px 12px; border: 2px solid transparent; border-radius: 8px; background: rgba(255,255,255,0.5); color: #1a1a1a; font-size: 0.78rem; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
     .cloak-btn:hover { background: rgba(255,255,255,0.8); }
     .cloak-btn.active { border-color: #ff8c00; background: rgba(255,140,0,0.15); font-weight: bold; }
     .cloak-custom { display: flex; gap: 6px; margin-top: 4px; }
-    .cloak-custom input {
-      flex: 1; padding: 6px 10px; border-radius: 8px;
-      border: 1px solid rgba(255,140,0,0.4); background: rgba(255,255,255,0.7);
-      color: #1a1a1a; font-size: 0.8rem; outline: none; margin-bottom: 0;
-    }
-    .cloak-custom button {
-      padding: 6px 12px; border: none; border-radius: 8px;
-      background: #1a237e; color: #fff; font-size: 0.78rem; cursor: pointer;
-    }
+    .cloak-custom input { flex: 1; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,140,0,0.4); background: rgba(255,255,255,0.7); color: #1a1a1a; font-size: 0.8rem; outline: none; margin-bottom: 0; }
+    .cloak-custom button { padding: 6px 12px; border: none; border-radius: 8px; background: #1a237e; color: #fff; font-size: 0.78rem; cursor: pointer; }
     .cloak-custom button:hover { background: #283593; }
 
+    /* ===== MINESWEEPER ===== */
+    .ms-section { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; margin-bottom: 40px; text-align: center; }
+    .ms-section h3 { color: #90caf9; margin-bottom: 14px; font-size: 1rem; text-align: left; }
+    .ms-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; }
+    .ms-flag-count { background: #1b0000; color: #ef5350; padding: 6px 12px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1.2rem; min-width: 80px; border: 1px solid #b71c1c; }
+    .ms-status { color: #a5d6a7; font-size: 0.9rem; font-weight: bold; }
+    .ms-reset { padding: 6px 16px; background: #4a148c; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+    .ms-reset:hover { background: #6a1b9a; }
+    .ms-board { display: inline-grid; gap: 2px; background: #0a0f2c; padding: 8px; border-radius: 10px; border: 1px solid #1a237e; }
+    .ms-cell {
+      width: 32px; height: 32px;
+      background: #1a237e; border: none; border-radius: 4px;
+      color: #fff; font-size: 0.85rem; font-weight: bold;
+      cursor: pointer; transition: background 0.1s; display: flex; align-items: center; justify-content: center;
+    }
+    .ms-cell:hover { background: #283593; }
+    .ms-cell.revealed { background: #0a0f2c; cursor: default; }
+    .ms-cell.revealed:hover { background: #0a0f2c; }
+    .ms-cell.flagged { background: #4a148c; }
+    .ms-cell.mine { background: #b71c1c; }
+    .ms-cell.mine:hover { background: #b71c1c; }
+    .ms-cell .n1 { color: #42a5f5; }
+    .ms-cell .n2 { color: #66bb6a; }
+    .ms-cell .n3 { color: #ef5350; }
+    .ms-cell .n4 { color: #ab47bc; }
+    .ms-cell .n5 { color: #ff7043; }
+    .ms-cell .n6 { color: #26c6da; }
+    .ms-cell .n7 { color: #ffca28; }
+    .ms-cell .n8 { color: #bdbdbd; }
+    .ms-diff { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
+    .ms-diff button { padding: 6px 14px; background: #1a237e; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: background 0.2s; }
+    .ms-diff button:hover { background: #283593; }
+    .ms-diff button.active { background: #1b5e20; }
+
     /* DEV AREA */
-    .dev-area {
-      background: #050c1a; border: 1px solid #1a237e; border-radius: 12px;
-      padding: 24px; text-align: left; margin-bottom: 40px;
-    }
+    .dev-area { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; text-align: left; margin-bottom: 40px; }
     .dev-area h3 { color: #90caf9; margin-bottom: 12px; font-size: 1rem; }
-    .dev-area textarea {
-      width: 100%; height: 200px; background: #0a0f2c; color: #a5d6a7;
-      border: 1px solid #1a237e; border-radius: 8px; padding: 12px;
-      font-family: 'Courier New', monospace; font-size: 0.9rem; resize: vertical; outline: none;
-    }
+    .dev-area textarea { width: 100%; height: 200px; background: #0a0f2c; color: #a5d6a7; border: 1px solid #1a237e; border-radius: 8px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.9rem; resize: vertical; outline: none; }
     .dev-area textarea:focus { border-color: #3949ab; }
     .dev-area .dev-btns { display: flex; gap: 10px; margin-top: 10px; }
-    .dev-area button {
-      padding: 8px 16px; background: #1a237e; color: #fff;
-      border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;
-    }
+    .dev-area button { padding: 8px 16px; background: #1a237e; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
     .dev-area button:hover { background: #283593; }
-    #dev-output {
-      margin-top: 12px; background: #0a0f2c; border: 1px solid #1a237e;
-      border-radius: 8px; padding: 12px; font-family: 'Courier New', monospace;
-      font-size: 0.85rem; color: #fff; min-height: 60px; white-space: pre-wrap;
-    }
+    #dev-output { margin-top: 12px; background: #0a0f2c; border: 1px solid #1a237e; border-radius: 8px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #fff; min-height: 60px; white-space: pre-wrap; }
 
     footer { position: relative; z-index: 1; text-align: center; color: #424242; font-size: 0.8rem; padding: 20px; }
   </style>
@@ -265,7 +235,7 @@
 <!-- SNOWFLAKES -->
 <div class="snowflakes" id="snowflakes"></div>
 
-<!-- ===== SUMMER PROXY OVERLAY ===== -->
+<!-- SUMMER PROXY OVERLAY -->
 <div id="proxy-overlay">
   <div class="summer-sun"></div>
   <div class="cloud" style="width:120px;height:40px;top:60px;left:-50px;animation-duration:18s;">
@@ -282,7 +252,6 @@
   <span class="float-emoji" style="left:88%;animation-duration:9s;animation-delay:0.5s;">☀️</span>
   <span class="float-emoji" style="left:50%;animation-duration:10s;animation-delay:3s;">🍦</span>
   <span class="float-emoji" style="left:35%;animation-duration:7s;animation-delay:4s;">🐚</span>
-
   <div class="summer-tux">
     <svg width="90" height="110" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
       <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
@@ -308,7 +277,6 @@
       <rect x="34" y="13" width="32" height="4" rx="2" fill="#ff8c00"/>
     </svg>
   </div>
-
   <div class="proxy-box">
     <h2>☀️ Summer Mode Unlocked!</h2>
     <p>🌊 Enter a URL and surf the web freely 🏄</p>
@@ -317,32 +285,16 @@
       <button class="proxy-go" onclick="goProxy()">🏄 Surf</button>
       <button class="proxy-close" onclick="closeProxy()">Close</button>
     </div>
-
-    <!-- TAB CLOAK PANEL -->
     <div class="cloak-panel">
       <h4>🎭 Tab Cloak — disguise this tab</h4>
       <div class="cloak-options">
-        <button class="cloak-btn active" onclick="setCloak('Study Helper - Educational Resources','https://www.google.com/favicon.ico',this)">
-          📚 Default
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Google','https://www.google.com/favicon.ico',this)">
-          🔍 Google
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Khan Academy','https://cdn.kastatic.org/images/favicon.ico',this)">
-          🎓 Khan Academy
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Google Classroom','https://ssl.gstatic.com/classroom/favicon.png',this)">
-          🏫 Google Classroom
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Quizlet','https://quizlet.com/favicon.ico',this)">
-          📝 Quizlet
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Duolingo','https://d35aaqx5ub95lt.cloudfront.net/favicon.ico',this)">
-          🦜 Duolingo
-        </button>
-        <button class="cloak-btn" onclick="setCloak('Wikipedia','https://en.wikipedia.org/favicon.ico',this)">
-          📖 Wikipedia
-        </button>
+        <button class="cloak-btn active" onclick="setCloak('Study Helper - Educational Resources','https://www.google.com/favicon.ico',this)">📚 Default</button>
+        <button class="cloak-btn" onclick="setCloak('Google','https://www.google.com/favicon.ico',this)">🔍 Google</button>
+        <button class="cloak-btn" onclick="setCloak('Khan Academy','https://cdn.kastatic.org/images/favicon.ico',this)">🎓 Khan Academy</button>
+        <button class="cloak-btn" onclick="setCloak('Google Classroom','https://ssl.gstatic.com/classroom/favicon.png',this)">🏫 Classroom</button>
+        <button class="cloak-btn" onclick="setCloak('Quizlet','https://quizlet.com/favicon.ico',this)">📝 Quizlet</button>
+        <button class="cloak-btn" onclick="setCloak('Duolingo','https://d35aaqx5ub95lt.cloudfront.net/favicon.ico',this)">🦜 Duolingo</button>
+        <button class="cloak-btn" onclick="setCloak('Wikipedia','https://en.wikipedia.org/favicon.ico',this)">📖 Wikipedia</button>
       </div>
       <div class="cloak-custom">
         <input type="text" id="custom-cloak-title" placeholder="Custom tab title..." />
@@ -350,11 +302,7 @@
       </div>
     </div>
   </div>
-
-  <div class="waves">
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-  </div>
+  <div class="waves"><div class="wave wave1"></div><div class="wave wave2"></div></div>
 </div>
 
 <!-- HEADER -->
@@ -371,10 +319,7 @@
 <main>
   <h2>🎄 Your Educational Resource Hub</h2>
   <p class="subtitle">Search for study materials, tutorials, and more.</p>
-
-  <div class="xmas-banner">
-    🎅 Happy Holidays from Study Helper! Wishing you a productive and joyful season. 🎁
-  </div>
+  <div class="xmas-banner">🎅 Happy Holidays from Study Helper! Wishing you a productive and joyful season. 🎁</div>
 
   <!-- TUX + SEARCH -->
   <div class="tux-container">
@@ -439,6 +384,22 @@
     </div>
   </div>
 
+  <!-- ===== MINESWEEPER ===== -->
+  <div class="ms-section">
+    <h3>💣 Logic Puzzle — Practice Your Deduction Skills!</h3>
+    <div class="ms-header">
+      <div class="ms-flag-count" id="ms-flags">🚩 10</div>
+      <div class="ms-status" id="ms-status">Click to start</div>
+      <button class="ms-reset" onclick="msInit()">🔄 New Game</button>
+    </div>
+    <div class="ms-board" id="ms-board"></div>
+    <div class="ms-diff">
+      <button class="active" onclick="msSetDifficulty('easy',this)">Easy (9×9)</button>
+      <button onclick="msSetDifficulty('medium',this)">Medium (12×12)</button>
+      <button onclick="msSetDifficulty('hard',this)">Hard (16×16)</button>
+    </div>
+  </div>
+
   <!-- DEV AREA -->
   <div class="dev-area">
     <h3>🛠️ Developer Area</h3>
@@ -456,7 +417,7 @@ console.log('Hello, World!');"></textarea>
 <footer>© 2025 Study Helper — Educational Resources for Students</footer>
 
 <script>
-  // LOADING SCREEN
+  // ==================== LOADING SCREEN ====================
   window.addEventListener('load', () => {
     setTimeout(() => {
       document.getElementById('loading-screen').classList.add('hide');
@@ -464,20 +425,22 @@ console.log('Hello, World!');"></textarea>
     }, 2800);
   });
 
-  // SNOWFLAKES
-  const sf = document.getElementById('snowflakes');
-  for (let i = 0; i < 28; i++) {
-    const s = document.createElement('div');
-    s.className = 'snowflake';
-    s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
-    s.style.left = Math.random()*100 + 'vw';
-    s.style.fontSize = (0.7 + Math.random()*1.1) + 'rem';
-    s.style.animationDuration = (4 + Math.random()*8) + 's';
-    s.style.animationDelay = (Math.random()*8) + 's';
-    sf.appendChild(s);
-  }
+  // ==================== SNOWFLAKES ====================
+  (function() {
+    const sf = document.getElementById('snowflakes');
+    for (let i = 0; i < 28; i++) {
+      const s = document.createElement('div');
+      s.className = 'snowflake';
+      s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.fontSize = (0.7 + Math.random()*1.1) + 'rem';
+      s.style.animationDuration = (4 + Math.random()*8) + 's';
+      s.style.animationDelay = (Math.random()*8) + 's';
+      sf.appendChild(s);
+    }
+  })();
 
-  // SEARCH
+  // ==================== SEARCH ====================
   function handleSearch(e) {
     e.preventDefault();
     const val = document.getElementById('searchInput').value.trim();
@@ -489,14 +452,14 @@ console.log('Hello, World!');"></textarea>
     setTimeout(() => window.open(url, '_blank'), 1200);
   }
 
-  // EASTER EGG
+  // ==================== EASTER EGG ====================
   document.getElementById('easterEgg').addEventListener('click', () => {
     const msg = document.getElementById('easterMsg');
     msg.classList.toggle('show');
     setTimeout(() => msg.classList.remove('show'), 3000);
   });
 
-  // CALCULATOR
+  // ==================== CALCULATOR ====================
   let calcVal = '';
   function calcInput(val) {
     if (calcVal === '0' && !isNaN(val)) calcVal = '';
@@ -508,21 +471,13 @@ console.log('Hello, World!');"></textarea>
       setTimeout(() => document.getElementById('proxy-overlay').classList.add('show'), 300);
     }
   }
-  function calcClear() {
-    calcVal = '';
-    document.getElementById('calc-display').textContent = '0';
-  }
+  function calcClear() { calcVal = ''; document.getElementById('calc-display').textContent = '0'; }
   function calcEquals() {
-    try {
-      calcVal = String(eval(calcVal));
-      document.getElementById('calc-display').textContent = calcVal;
-    } catch(e) {
-      document.getElementById('calc-display').textContent = 'Error';
-      calcVal = '';
-    }
+    try { calcVal = String(eval(calcVal)); document.getElementById('calc-display').textContent = calcVal; }
+    catch(e) { document.getElementById('calc-display').textContent = 'Error'; calcVal = ''; }
   }
 
-  // PROXY
+  // ==================== PROXY ====================
   function goProxy() {
     let url = document.getElementById('proxy-url').value.trim();
     if (!url) return;
@@ -533,20 +488,15 @@ console.log('Hello, World!');"></textarea>
     document.getElementById('proxy-overlay').classList.remove('show');
     document.getElementById('proxy-url').value = '';
   }
-  document.getElementById('proxy-url').addEventListener('keydown', e => {
-    if (e.key === 'Enter') goProxy();
-  });
+  document.getElementById('proxy-url').addEventListener('keydown', e => { if (e.key === 'Enter') goProxy(); });
 
-  // TAB CLOAK
+  // ==================== TAB CLOAK ====================
   function setCloak(title, iconUrl, btn) {
     document.title = title;
-    const icon = document.getElementById('tab-icon');
-    icon.href = iconUrl;
-    // mark active button
+    document.getElementById('tab-icon').href = iconUrl;
     document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
   }
-
   function applyCustomCloak() {
     const title = document.getElementById('custom-cloak-title').value.trim();
     if (!title) return;
@@ -554,28 +504,207 @@ console.log('Hello, World!');"></textarea>
     document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
   }
 
-  // DEV AREA
+  // ==================== MINESWEEPER ====================
+  const MS_CONFIGS = {
+    easy:   { rows: 9,  cols: 9,  mines: 10 },
+    medium: { rows: 12, cols: 12, mines: 25 },
+    hard:   { rows: 16, cols: 16, mines: 50 }
+  };
+  let msDiff = 'easy';
+  let msGrid = [];
+  let msRevealed = [];
+  let msFlagged = [];
+  let msGameOver = false;
+  let msWin = false;
+  let msFlagsLeft = 0;
+  let msFirstClick = true;
+
+  function msSetDifficulty(diff, btn) {
+    msDiff = diff;
+    document.querySelectorAll('.ms-diff button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    msInit();
+  }
+
+  function msInit() {
+    const cfg = MS_CONFIGS[msDiff];
+    msGrid = [];
+    msRevealed = [];
+    msFlagged = [];
+    msGameOver = false;
+    msWin = false;
+    msFirstClick = true;
+    msFlagsLeft = cfg.mines;
+
+    for (let r = 0; r < cfg.rows; r++) {
+      msGrid.push(new Array(cfg.cols).fill(0));
+      msRevealed.push(new Array(cfg.cols).fill(false));
+      msFlagged.push(new Array(cfg.cols).fill(false));
+    }
+
+    msRender();
+    document.getElementById('ms-status').textContent = 'Click to start';
+    document.getElementById('ms-status').style.color = '#a5d6a7';
+  }
+
+  function msPlaceMines(safeR, safeC) {
+    const cfg = MS_CONFIGS[msDiff];
+    let placed = 0;
+    while (placed < cfg.mines) {
+      const r = Math.floor(Math.random() * cfg.rows);
+      const c = Math.floor(Math.random() * cfg.cols);
+      // Don't place on safe cell or already mined
+      if (msGrid[r][c] === -1) continue;
+      if (Math.abs(r - safeR) <= 1 && Math.abs(c - safeC) <= 1) continue;
+      msGrid[r][c] = -1;
+      placed++;
+    }
+    // Calculate neighbor counts
+    for (let r = 0; r < cfg.rows; r++) {
+      for (let c = 0; c < cfg.cols; c++) {
+        if (msGrid[r][c] === -1) continue;
+        let count = 0;
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const nr = r + dr, nc = c + dc;
+            if (nr >= 0 && nr < cfg.rows && nc >= 0 && nc < cfg.cols && msGrid[nr][nc] === -1) count++;
+          }
+        }
+        msGrid[r][c] = count;
+      }
+    }
+  }
+
+  function msFloodReveal(r, c) {
+    const cfg = MS_CONFIGS[msDiff];
+    if (r < 0 || r >= cfg.rows || c < 0 || c >= cfg.cols) return;
+    if (msRevealed[r][c] || msFlagged[r][c]) return;
+    msRevealed[r][c] = true;
+    if (msGrid[r][c] === 0) {
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          if (dr === 0 && dc === 0) continue;
+          msFloodReveal(r + dr, c + dc);
+        }
+      }
+    }
+  }
+
+  function msCheckWin() {
+    const cfg = MS_CONFIGS[msDiff];
+    for (let r = 0; r < cfg.rows; r++) {
+      for (let c = 0; c < cfg.cols; c++) {
+        if (msGrid[r][c] !== -1 && !msRevealed[r][c]) return false;
+      }
+    }
+    return true;
+  }
+
+  function msReveal(r, c) {
+    if (msGameOver || msWin) return;
+    if (msFlagged[r][c] || msRevealed[r][c]) return;
+
+    if (msFirstClick) {
+      msPlaceMines(r, c);
+      msFirstClick = false;
+      document.getElementById('ms-status').textContent = '🟢 Playing...';
+    }
+
+    if (msGrid[r][c] === -1) {
+      msGameOver = true;
+      msRevealed[r][c] = true;
+      // Reveal all mines
+      const cfg = MS_CONFIGS[msDiff];
+      for (let rr = 0; rr < cfg.rows; rr++)
+        for (let cc = 0; cc < cfg.cols; cc++)
+          if (msGrid[rr][cc] === -1) msRevealed[rr][cc] = true;
+      msRender();
+      document.getElementById('ms-status').textContent = '💥 Game Over!';
+      document.getElementById('ms-status').style.color = '#ef5350';
+      return;
+    }
+
+    msFloodReveal(r, c);
+
+    if (msCheckWin()) {
+      msWin = true;
+      document.getElementById('ms-status').textContent = '🎉 You Win!';
+      document.getElementById('ms-status').style.color = '#66bb6a';
+    } else {
+      document.getElementById('ms-status').textContent = '🟢 Playing...';
+      document.getElementById('ms-status').style.color = '#a5d6a7';
+    }
+
+    msRender();
+  }
+
+  function msToggleFlag(r, c) {
+    if (msGameOver || msWin) return;
+    if (msRevealed[r][c]) return;
+    msFlagged[r][c] = !msFlagged[r][c];
+    msFlagsLeft += msFlagged[r][c] ? -1 : 1;
+    msRender();
+  }
+
+  function msRender() {
+    const cfg = MS_CONFIGS[msDiff];
+    const board = document.getElementById('ms-board');
+    board.innerHTML = '';
+    board.style.gridTemplateColumns = `repeat(${cfg.cols}, 32px)`;
+
+    for (let r = 0; r < cfg.rows; r++) {
+      for (let c = 0; c < cfg.cols; c++) {
+        const cell = document.createElement('button');
+        cell.className = 'ms-cell';
+        cell.style.width = '32px';
+        cell.style.height = '32px';
+
+        if (msRevealed[r][c]) {
+          cell.classList.add('revealed');
+          if (msGrid[r][c] === -1) {
+            cell.classList.add('mine');
+            cell.textContent = '💣';
+          } else if (msGrid[r][c] > 0) {
+            cell.innerHTML = `<span class="n${msGrid[r][c]}">${msGrid[r][c]}</span>`;
+          }
+        } else if (msFlagged[r][c]) {
+          cell.classList.add('flagged');
+          cell.textContent = '🚩';
+        }
+
+        cell.addEventListener('click', (e) => {
+          e.preventDefault();
+          msReveal(r, c);
+        });
+        cell.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          msToggleFlag(r, c);
+        });
+
+        board.appendChild(cell);
+      }
+    }
+
+    document.getElementById('ms-flags').textContent = `🚩 ${msFlagsLeft}`;
+  }
+
+  // Init Minesweeper on load
+  msInit();
+
+  // ==================== DEV AREA ====================
   function runCode() {
     const code = document.getElementById('devCode').value;
     const out = document.getElementById('dev-output');
     const logs = [];
     const origLog = console.log;
     console.log = (...args) => logs.push(args.join(' '));
-    try {
-      eval(code);
-      out.textContent = logs.length ? logs.join('\n') : '// No output';
-    } catch(e) {
-      out.textContent = '❌ Error: ' + e.message;
-    }
+    try { eval(code); out.textContent = logs.length ? logs.join('\n') : '// No output'; }
+    catch(e) { out.textContent = '❌ Error: ' + e.message; }
     console.log = origLog;
   }
-  function clearCode() {
-    document.getElementById('devCode').value = '';
-    document.getElementById('dev-output').textContent = '// Output will appear here...';
-  }
-  function copyCode() {
-    navigator.clipboard.writeText(document.getElementById('devCode').value).then(() => alert('Code copied!'));
-  }
+  function clearCode() { document.getElementById('devCode').value = ''; document.getElementById('dev-output').textContent = '// Output will appear here...'; }
+  function copyCode() { navigator.clipboard.writeText(document.getElementById('devCode').value).then(() => alert('Code copied!')); }
 </script>
 </body>
 </html>
