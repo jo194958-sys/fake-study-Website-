@@ -1,710 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Study Helper - Educational Resources</title>
-  <link rel="icon" id="tab-icon" href="https://www.google.com/favicon.ico"/>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background-color: #0a0f2c; color: #e0e0e0;
-      font-family: 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden;
-    }
-
-    /* LOADING SCREEN */
-    #loading-screen {
-      position: fixed; inset: 0; background: #0a0f2c;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      z-index: 9999; transition: opacity 0.8s ease;
-    }
-    #loading-screen.hide { opacity: 0; pointer-events: none; }
-    .loading-text { color: #c8e6c9; font-size: 1.1rem; margin-top: 20px; letter-spacing: 1px; }
-    .tux-walk { animation: waddle 0.5s infinite alternate; display: inline-block; }
-    @keyframes waddle { 0% { transform: rotate(-8deg) translateY(0px); } 100% { transform: rotate(8deg) translateY(-4px); } }
-
-    /* SNOWFLAKES */
-    .snowflakes { position: fixed; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 0; }
-    .snowflake { position: absolute; top: -20px; color: #fff; font-size: 1rem; opacity: 0.7; animation: fall linear infinite; }
-    @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
-
-    /* HEADER */
-    header {
-      position: relative; z-index: 1; background: #0d1440; border-bottom: 2px solid #1a237e;
-      padding: 12px 30px; display: flex; align-items: center; justify-content: space-between;
-    }
-    header h1 { font-size: 1.3rem; color: #a5d6a7; }
-    header nav a { color: #90caf9; text-decoration: none; margin-left: 20px; font-size: 0.9rem; }
-    header nav a:hover { text-decoration: underline; }
-
-    /* MAIN */
-    main { position: relative; z-index: 1; max-width: 860px; margin: 60px auto; padding: 0 20px; text-align: center; }
-    h2 { font-size: 1.6rem; color: #c8e6c9; margin-bottom: 8px; }
-    p.subtitle { color: #9e9e9e; font-size: 0.95rem; margin-bottom: 40px; }
-
-    /* TUX */
-    .tux-container { position: relative; display: inline-block; margin-bottom: 30px; }
-    .speech-bubble {
-      position: absolute; top: -54px; left: 50%; transform: translateX(-50%);
-      background: #1a237e; border: 1px solid #3949ab; color: #fff;
-      padding: 8px 14px; border-radius: 12px; font-size: 0.82rem;
-      white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none;
-    }
-    .speech-bubble::after {
-      content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
-      border: 8px solid transparent; border-top-color: #1a237e; border-bottom: none;
-    }
-    .speech-bubble.show { opacity: 1; }
-    .easter-egg { position: absolute; bottom: 0; right: -38px; font-size: 1.4rem; cursor: pointer; transition: transform 0.2s; }
-    .easter-egg:hover { transform: scale(1.3) rotate(15deg); }
-    .easter-egg-msg {
-      position: absolute; bottom: 36px; right: -100px;
-      background: #b71c1c; color: #fff; padding: 6px 10px; border-radius: 8px;
-      font-size: 0.75rem; white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none;
-    }
-    .easter-egg-msg.show { opacity: 1; }
-    .tux-svg { width: 110px; height: auto; display: block; }
-
-    /* SEARCH */
-    .search-form { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
-    .search-form input {
-      width: 400px; padding: 12px 16px; border-radius: 8px;
-      border: 1px solid #3949ab; background: #0d1440; color: #fff; font-size: 1rem; outline: none;
-    }
-    .search-form input:focus { border-color: #7986cb; }
-    .search-form button {
-      padding: 12px 22px; background: #1b5e20; color: #fff;
-      border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; transition: background 0.2s;
-    }
-    .search-form button:hover { background: #2e7d32; }
-
-    /* CARDS */
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 50px; }
-    .card { background: #0d1440; border: 1px solid #1a237e; border-radius: 12px; padding: 20px; text-align: left; }
-    .card h3 { color: #a5d6a7; font-size: 1rem; margin-bottom: 6px; }
-    .card p { color: #9e9e9e; font-size: 0.85rem; }
-
-    /* CHRISTMAS BANNER */
-    .xmas-banner {
-      background: #1b0000; border: 1px solid #b71c1c; border-radius: 10px;
-      padding: 14px 20px; margin-bottom: 40px; color: #ef9a9a; font-size: 0.9rem;
-    }
-
-    /* CALCULATOR */
-    .calc-section { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; margin-bottom: 40px; text-align: left; }
-    .calc-section h3 { color: #90caf9; margin-bottom: 16px; font-size: 1rem; }
-    .calc-display { background: #0a0f2c; border: 1px solid #3949ab; border-radius: 8px; padding: 14px 16px; font-size: 1.6rem; color: #a5d6a7; text-align: right; margin-bottom: 12px; min-height: 54px; font-family: 'Courier New', monospace; letter-spacing: 2px; }
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .calc-btn { padding: 16px; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; transition: background 0.15s, transform 0.1s; }
-    .calc-btn:active { transform: scale(0.95); }
-    .calc-btn.num { background: #1a237e; color: #fff; }
-    .calc-btn.num:hover { background: #283593; }
-    .calc-btn.op { background: #1b5e20; color: #fff; }
-    .calc-btn.op:hover { background: #2e7d32; }
-    .calc-btn.eq { background: #b71c1c; color: #fff; }
-    .calc-btn.eq:hover { background: #c62828; }
-    .calc-btn.clr { background: #4a148c; color: #fff; }
-    .calc-btn.clr:hover { background: #6a1b9a; }
-
-    /* SUMMER PROXY OVERLAY */
-    #proxy-overlay {
-      display: none; position: fixed; inset: 0; z-index: 9998;
-      background: linear-gradient(180deg, #87ceeb 0%, #ffe066 60%, #f4a460 100%);
-      overflow: hidden; flex-direction: column; align-items: center; justify-content: center;
-    }
-    #proxy-overlay.show { display: flex; }
-    .summer-sun {
-      position: absolute; top: 30px; right: 60px; width: 90px; height: 90px;
-      background: #FFD700; border-radius: 50%;
-      box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3);
-      animation: pulse-sun 3s ease-in-out infinite;
-    }
-    @keyframes pulse-sun { 0%,100% { box-shadow: 0 0 40px 20px #ffe566, 0 0 80px 40px rgba(255,220,0,0.3); } 50% { box-shadow: 0 0 60px 30px #ffe566, 0 0 100px 60px rgba(255,220,0,0.2); } }
-    .cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.85; animation: drift linear infinite; }
-    @keyframes drift { from { transform: translateX(-200px); } to { transform: translateX(110vw); } }
-    .waves { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; overflow: hidden; }
-    .wave { position: absolute; bottom: 0; width: 200%; height: 100px; border-radius: 40%; animation: wave-move linear infinite; }
-    .wave1 { animation-duration: 4s; opacity: 0.7; background: rgba(30,144,255,0.6); }
-    .wave2 { animation-duration: 6s; opacity: 0.5; background: rgba(100,180,255,0.5); bottom: 10px; }
-    @keyframes wave-move { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
-    .summer-tux { animation: tux-bob 1.5s ease-in-out infinite; margin-bottom: 10px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.25)); }
-    @keyframes tux-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    .proxy-box {
-      position: relative; z-index: 2; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px);
-      border: 2px solid rgba(255,255,255,0.6); border-radius: 20px; padding: 36px 40px;
-      text-align: center; max-width: 480px; width: 90%; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    }
-    .proxy-box h2 { color: #1a1a1a; font-size: 1.6rem; margin-bottom: 6px; }
-    .proxy-box p { color: #333; font-size: 0.9rem; margin-bottom: 20px; }
-    .proxy-box input { width: 100%; padding: 12px 16px; border-radius: 10px; border: 2px solid rgba(255,140,0,0.5); background: rgba(255,255,255,0.8); color: #1a1a1a; font-size: 1rem; outline: none; margin-bottom: 14px; }
-    .proxy-box input:focus { border-color: #ff8c00; }
-    .proxy-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .proxy-go { padding: 10px 28px; border: none; border-radius: 10px; background: #ff8c00; color: #fff; font-size: 1rem; cursor: pointer; font-weight: bold; transition: background 0.2s; box-shadow: 0 4px 12px rgba(255,140,0,0.4); }
-    .proxy-go:hover { background: #e67e00; }
-    .proxy-close { padding: 10px 28px; border: none; border-radius: 10px; background: rgba(0,0,0,0.2); color: #1a1a1a; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
-    .proxy-close:hover { background: rgba(0,0,0,0.35); }
-    .float-emoji { position: absolute; font-size: 2rem; animation: floaty linear infinite; pointer-events: none; }
-    @keyframes floaty { 0% { transform: translateY(0) rotate(0deg); opacity:1; } 100% { transform: translateY(-100vh) rotate(360deg); opacity:0; } }
-
-    /* TAB CLOAK */
-    .cloak-panel { margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.15); padding-top: 14px; text-align: left; }
-    .cloak-panel h4 { font-size: 0.85rem; color: #333; margin-bottom: 10px; font-weight: 600; }
-    .cloak-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-    .cloak-btn { padding: 6px 12px; border: 2px solid transparent; border-radius: 8px; background: rgba(255,255,255,0.5); color: #1a1a1a; font-size: 0.78rem; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 5px; }
-    .cloak-btn:hover { background: rgba(255,255,255,0.8); }
-    .cloak-btn.active { border-color: #ff8c00; background: rgba(255,140,0,0.15); font-weight: bold; }
-    .cloak-custom { display: flex; gap: 6px; margin-top: 4px; }
-    .cloak-custom input { flex: 1; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,140,0,0.4); background: rgba(255,255,255,0.7); color: #1a1a1a; font-size: 0.8rem; outline: none; margin-bottom: 0; }
-    .cloak-custom button { padding: 6px 12px; border: none; border-radius: 8px; background: #1a237e; color: #fff; font-size: 0.78rem; cursor: pointer; }
-    .cloak-custom button:hover { background: #283593; }
-
-    /* ===== MINESWEEPER ===== */
-    .ms-section { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; margin-bottom: 40px; text-align: center; }
-    .ms-section h3 { color: #90caf9; margin-bottom: 14px; font-size: 1rem; text-align: left; }
-    .ms-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 10px; }
-    .ms-flag-count { background: #1b0000; color: #ef5350; padding: 6px 12px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 1.2rem; min-width: 80px; border: 1px solid #b71c1c; }
-    .ms-status { color: #a5d6a7; font-size: 0.9rem; font-weight: bold; }
-    .ms-reset { padding: 6px 16px; background: #4a148c; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-    .ms-reset:hover { background: #6a1b9a; }
-    .ms-board { display: inline-grid; gap: 2px; background: #0a0f2c; padding: 8px; border-radius: 10px; border: 1px solid #1a237e; }
-    .ms-cell {
-      width: 32px; height: 32px;
-      background: #1a237e; border: none; border-radius: 4px;
-      color: #fff; font-size: 0.85rem; font-weight: bold;
-      cursor: pointer; transition: background 0.1s; display: flex; align-items: center; justify-content: center;
-    }
-    .ms-cell:hover { background: #283593; }
-    .ms-cell.revealed { background: #0a0f2c; cursor: default; }
-    .ms-cell.revealed:hover { background: #0a0f2c; }
-    .ms-cell.flagged { background: #4a148c; }
-    .ms-cell.mine { background: #b71c1c; }
-    .ms-cell.mine:hover { background: #b71c1c; }
-    .ms-cell .n1 { color: #42a5f5; }
-    .ms-cell .n2 { color: #66bb6a; }
-    .ms-cell .n3 { color: #ef5350; }
-    .ms-cell .n4 { color: #ab47bc; }
-    .ms-cell .n5 { color: #ff7043; }
-    .ms-cell .n6 { color: #26c6da; }
-    .ms-cell .n7 { color: #ffca28; }
-    .ms-cell .n8 { color: #bdbdbd; }
-    .ms-diff { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
-    .ms-diff button { padding: 6px 14px; background: #1a237e; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 0.82rem; transition: background 0.2s; }
-    .ms-diff button:hover { background: #283593; }
-    .ms-diff button.active { background: #1b5e20; }
-
-    /* DEV AREA */
-    .dev-area { background: #050c1a; border: 1px solid #1a237e; border-radius: 12px; padding: 24px; text-align: left; margin-bottom: 40px; }
-    .dev-area h3 { color: #90caf9; margin-bottom: 12px; font-size: 1rem; }
-    .dev-area textarea { width: 100%; height: 200px; background: #0a0f2c; color: #a5d6a7; border: 1px solid #1a237e; border-radius: 8px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.9rem; resize: vertical; outline: none; }
-    .dev-area textarea:focus { border-color: #3949ab; }
-    .dev-area .dev-btns { display: flex; gap: 10px; margin-top: 10px; }
-    .dev-area button { padding: 8px 16px; background: #1a237e; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
-    .dev-area button:hover { background: #283593; }
-    #dev-output { margin-top: 12px; background: #0a0f2c; border: 1px solid #1a237e; border-radius: 8px; padding: 12px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #fff; min-height: 60px; white-space: pre-wrap; }
-
-    footer { position: relative; z-index: 1; text-align: center; color: #424242; font-size: 0.8rem; padding: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub - Online Learning</title>
+<style>
+:root{--pmp:#ff7518;--prp:#9b30ff;--drk:#0d0221;--gst:#f0f0f0;--bld:#8b0000}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f8f9fa;color:#333;transition:all .4s;min-height:100vh}
+nav{padding:12px 24px;display:flex;justify-content:space-between;align-items:center}
+nav .logo{font-size:1.4rem;font-weight:bold;display:flex;align-items:center;gap:8px;cursor:pointer}
+nav .links{display:flex;gap:18px;list-style:none}
+nav .links a{text-decoration:none;font-size:.9rem;cursor:pointer}
+.hero{text-align:center;padding:40px 20px;background:#fff;margin:16px;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.hero h1{font-size:2rem;margin-bottom:10px}
+.hero p{font-size:1rem;color:#666;max-width:560px;margin:0 auto}
+/* STUDY MODE */
+.study{background:#f8f9fa;color:#333}
+.study nav{background:linear-gradient(135deg,#2d4a8a,#1a3060);color:#fff}
+.study nav .logo{color:#fff}
+.study nav .links a{color:#cbd5e1}
+.study nav .links a:hover{color:#fff}
+.study .hero h1{color:#2d4a8a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;padding:0 20px 30px;max-width:1100px;margin:0 auto}
+.card{background:#fff;border-radius:10px;padding:20px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;transition:transform .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.card h3{color:#2d4a8a;margin-bottom:6px}
+.tip{background:#e8f4ea;border-left:4px solid #4caf50;padding:12px 18px;margin:16px;border-radius:8px;font-size:.85rem}
+/* HALLOWEEN MODE */
+.hw{background:linear-gradient(180deg,#050014,#0d0221);color:var(--gst)}
+.hw nav{background:linear-gradient(135deg,#1a0033,#2d004f);border-bottom:2px solid var(--pmp)}
+.hw nav .logo{color:var(--pmp);text-shadow:0 0 10px rgba(255,117,24,.5)}
+.hw nav .links a{color:#b388ff}
+.hw nav .links a:hover{color:var(--pmp)}
+.hw .hero{background:transparent;box-shadow:none}
+.hw .hero h1{color:var(--pmp);text-shadow:0 0 15px rgba(255,117,24,.4)}
+.hw .hero p{color:#c4a6ff}
+/* GHOST */
+#ghost{width:110px;height:130px;margin:16px auto;display:block;cursor:pointer;animation:fl 3s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(159,122,234,.4))}
+#ghost:hover{transform:scale(1.1)}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+/* CALCULATOR */
+.calc{max-width:300px;margin:20px auto;background:#1a0033;border-radius:16px;padding:18px;box-shadow:0 0 30px rgba(155,48,255,.3);border:1px solid #3d0066}
+.calc-d{background:#0d0221;color:var(--pmp);font-size:1.8rem;text-align:right;padding:14px;border-radius:8px;margin-bottom:10px;font-family:'Courier New',monospace;min-height:56px;border:1px solid #3d0066}
+.calc-g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.calc-b{padding:14px;font-size:1.1rem;border:none;border-radius:8px;cursor:pointer;background:#2d004f;color:#e0c3fc;transition:all .15s}
+.calc-b:hover{background:#4d007f;transform:translateY(-2px)}
+.calc-b.op{background:var(--pmp);color:#0d0221;font-weight:bold}
+.calc-b.eq{background:var(--prp);color:#fff;grid-column:span 2}
+.calc-b.clr{background:var(--bld);color:#fff}
+/* PROXY */
+.proxy{display:none;padding:16px;max-width:850px;margin:0 auto}
+.proxy.on{display:block}
+.proxy h2{color:var(--pmp);text-align:center;font-size:1.8rem;margin-bottom:14px}
+.brand{display:flex;justify-content:center;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+.brand span{background:rgba(155,48,255,.15);border:1px solid var(--prp);padding:6px 14px;border-radius:20px;font-size:.8rem;color:#c4a6ff}
+.srch{display:flex;gap:8px;margin-bottom:24px}
+.srch input{flex:1;padding:12px 16px;border-radius:10px;border:1px solid #4d007f;background:#1a0033;color:#e0c3fc;font-size:.95rem;outline:none}
+.srch input:focus{border-color:var(--pmp)}
+.srch button{padding:12px 20px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--pmp),#ff5500);color:#0d0221;font-weight:bold;cursor:pointer}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.gc{background:linear-gradient(135deg,#1a0033,#2d004f);border:1px solid #4d007f;border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all .25s}
+.gc:hover{border-color:var(--pmp);transform:translateY(-4px);box-shadow:0 8px 24px rgba(255,117,24,.2)}
+.gc .ic{font-size:2.2rem;margin-bottom:6px}
+.gc h4{color:var(--pmp);margin-bottom:4px}
+.gc p{font-size:.75rem;color:#a888d4}
+.pframe{width:100%;height:450px;border:2px solid var(--pmp);border-radius:12px;background:#0d0221;display:none}
+.pframe.on{display:block}
+.pback{margin-top:8px;padding:8px 18px;background:var(--bld);color:#fff;border:none;border-radius:8px;cursor:pointer}
+/* CHESS */
+.chess{display:none;padding:16px;max-width:650px;margin:0 auto}
+.chess.on{display:block}
+.chess h2{color:var(--pmp);text-align:center;font-size:1.6rem;margin-bottom:12px}
+.cmode{display:flex;justify-content:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.cmode button{padding:8px 20px;border-radius:10px;border:1px solid #4d007f;background:#1a0033;color:#c4a6ff;cursor:pointer;font-size:.9rem}
+.cmode button.act{background:linear-gradient(135deg,var(--pmp),#ff5500);color:#0d0221;border-color:var(--pmp);font-weight:bold}
+.cboard{display:grid;grid-template-columns:repeat(8,1fr);width:min(440px,88vw);aspect-ratio:1;margin:0 auto 14px;border:3px solid var(--pmp);border-radius:8px;overflow:hidden}
+.csq{display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;user-select:none}
+.csq.l{background:#f0d9b5}.csq.d{background:#b58863}.csq.sel{background:#ffd700!important}
+.cstat{text-align:center;color:#c4a6ff;margin-bottom:10px;min-height:24px}
+.cctrl{display:flex;justify-content:center;gap:8px}
+.cctrl button{padding:6px 16px;border-radius:8px;border:1px solid #4d007f;background:#2d004f;color:#e0c3fc;cursor:pointer;font-size:.8rem}
+.slist{margin-top:14px;text-align:center}
+.slist h4{color:var(--prp);margin-bottom:6px}
+.si{background:#1a0033;border:1px solid #4d007f;border-radius:8px;padding:8px 14px;margin-bottom:5px;display:flex;justify-content:space-between;font-size:.8rem;color:#c4a6ff}
+.sdot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}
+.sdot.on{background:#4caf50;box-shadow:0 0 6px #4caf50}.sdot.off{background:#f44336}
+/* VPN */
+.vpn{position:fixed;bottom:16px;right:16px;background:#1a0033;border:1px solid var(--prp);border-radius:12px;padding:14px;width:230px;box-shadow:0 4px 24px rgba(155,48,255,.3);z-index:100;display:none}
+.hw .vpn{display:block}
+.vpn h4{color:var(--pmp);margin-bottom:8px;font-size:.9rem}
+.vsw{position:relative;width:46px;height:24px;background:#3d0066;border-radius:12px;cursor:pointer;transition:.3s;display:inline-block;vertical-align:middle;margin-right:10px}
+.vsw.on{background:#4caf50}
+.vsw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.3s}
+.vsw.on::after{left:25px}
+.vst{font-size:.78rem;color:#a888d4}.vst.on{color:#4caf50}
+.vsl{width:100%;padding:6px;border-radius:8px;border:1px solid #4d007f;background:#0d0221;color:#e0c3fc;font-size:.8rem;margin-top:8px}
+/* PANIC */
+.panic{position:fixed;bottom:16px;left:16px;background:linear-gradient(135deg,#dc143c,#8b0000);color:#fff;border:none;border-radius:50%;width:60px;height:60px;font-size:.7rem;font-weight:bold;cursor:pointer;box-shadow:0 4px 20px rgba(220,20,60,.5);z-index:999;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.1}
+.panic:hover{transform:scale(1.1)}
+.pmod{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
+.pmod.on{display:flex}
+.pmc{background:#1a0033;border:1px solid var(--pmp);border-radius:16px;padding:28px;width:90%;max-width:380px;text-align:center}
+.pmc h3{color:var(--pmp);margin-bottom:14px}
+.pmc p{color:#c4a6ff;margin-bottom:14px;font-size:.85rem}
+.pmc input{width:100%;padding:11px;border-radius:8px;border:1px solid #4d007f;background:#0d0221;color:#e0c3fc;font-size:.9rem;margin-bottom:14px;outline:none}
+.pmc button{padding:9px 22px;border-radius:8px;border:none;cursor:pointer;font-size:.85rem;margin:4px}
+.psave{background:var(--pmp);color:#0d0221;font-weight:bold}
+.pcan{background:#3d0066;color:#c4a6ff}
+/* EASTER EGG */
+.egg{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a0033,#2d004f);border:2px solid var(--pmp);border-radius:20px;padding:36px;text-align:center;z-index:2000;box-shadow:0 0 60px rgba(255,117,24,.4)}
+.egg.on{display:block}
+.egg h2{color:var(--pmp);font-size:1.8rem;margin-bottom:10px}
+.egg p{color:#c4a6ff;margin-bottom:18px}
+.egg .sg{font-size:3.5rem;animation:fl 2s ease-in-out infinite}
+.ovr{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1999}
+.ovr.on{display:block}
+@media(max-width:600px){.links{display:none!important}.calc{max-width:260px}#ghost{width:80px;height:100px}.vpn{width:180px;bottom:80px}}
+</style>
 </head>
-<body>
-
-<!-- LOADING SCREEN -->
-<div id="loading-screen">
-  <div class="tux-walk">
-    <svg width="100" height="120" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
-      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
-      <circle cx="44" cy="30" r="3.5" fill="white"/>
-      <circle cx="56" cy="30" r="3.5" fill="white"/>
-      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
-      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
-      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
-      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
-      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <polygon points="50,5 30,26 70,26" fill="#c0392b"/>
-      <rect x="28" y="24" width="44" height="7" rx="3" fill="white"/>
-      <circle cx="50" cy="5" r="5" fill="white"/>
-    </svg>
-  </div>
-  <div class="loading-text">🎄 Loading Study Helper... Please wait 🐧</div>
+<body class="study" id="body">
+<nav>
+<div class="logo" id="logo"><span id="logoIcon">📚</span><span id="logoText">StudyHub</span></div>
+<ul class="links" id="navLinks">
+<li><a onclick="showSub('math')">Math</a></li>
+<li><a onclick="showSub('science')">Science</a></li>
+<li><a onclick="showSub('history')">History</a></li>
+<li><a onclick="showSub('english')">English</a></li>
+<li><a onclick="showSub('coding')">Coding</a></li>
+</ul>
+</nav>
+<div class="hero">
+<svg id="ghost" viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg">
+<path d="M60 10 C30 10 18 35 18 60 L18 120 C18 125 22 128 26 125 L34 118 C38 122 42 118 44 115 L52 122 C56 126 60 122 62 119 L70 124 C74 127 78 123 80 120 L88 125 C92 128 96 124 96 119 L96 60 C96 35 88 10 60 10 Z" fill="#f0f0f0" stroke="#c4a6ff" stroke-width="2" opacity="0.95"/>
+<circle cx="46" cy="50" r="8" fill="#0d0221"/><circle cx="74" cy="50" r="8" fill="#0d0221"/>
+<circle cx="48" cy="48" r="3" fill="#fff"/><circle cx="76" cy="48" r="3" fill="#fff"/>
+<ellipse cx="60" cy="72" rx="8" ry="12" fill="#0d0221"/>
+<circle cx="38" cy="68" r="6" fill="#ff7518" opacity="0.3"/><circle cx="82" cy="68" r="6" fill="#ff7518" opacity="0.3"/>
+<ellipse cx="60" cy="12" rx="24" ry="10" fill="#ff7518" stroke="#cc5500" stroke-width="1.5"/>
+<rect x="57" y="4" width="6" height="8" rx="2" fill="#2d8f2d"/>
+</svg>
+<h1 id="title">Welcome to StudyHub</h1>
+<p id="subtitle">Your one-stop platform for online learning. Explore subjects, take quizzes, and track your progress.</p>
 </div>
-
-<!-- SNOWFLAKES -->
-<div class="snowflakes" id="snowflakes"></div>
-
-<!-- SUMMER PROXY OVERLAY -->
-<div id="proxy-overlay">
-  <div class="summer-sun"></div>
-  <div class="cloud" style="width:120px;height:40px;top:60px;left:-50px;animation-duration:18s;">
-    <div style="width:60px;height:60px;top:-30px;left:15px;position:absolute;background:white;border-radius:50%;"></div>
-    <div style="width:40px;height:40px;top:-18px;left:50px;position:absolute;background:white;border-radius:50%;"></div>
-  </div>
-  <div class="cloud" style="width:90px;height:30px;top:120px;left:-30px;animation-duration:24s;animation-delay:6s;">
-    <div style="width:45px;height:45px;top:-22px;left:10px;position:absolute;background:white;border-radius:50%;"></div>
-    <div style="width:30px;height:30px;top:-12px;left:40px;position:absolute;background:white;border-radius:50%;"></div>
-  </div>
-  <span class="float-emoji" style="left:8%;animation-duration:6s;">🌊</span>
-  <span class="float-emoji" style="left:20%;animation-duration:8s;animation-delay:1s;">🌴</span>
-  <span class="float-emoji" style="left:75%;animation-duration:7s;animation-delay:2s;">🏖️</span>
-  <span class="float-emoji" style="left:88%;animation-duration:9s;animation-delay:0.5s;">☀️</span>
-  <span class="float-emoji" style="left:50%;animation-duration:10s;animation-delay:3s;">🍦</span>
-  <span class="float-emoji" style="left:35%;animation-duration:7s;animation-delay:4s;">🐚</span>
-  <div class="summer-tux">
-    <svg width="90" height="110" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
-      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
-      <circle cx="44" cy="30" r="3.5" fill="white"/>
-      <circle cx="56" cy="30" r="3.5" fill="white"/>
-      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
-      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
-      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
-      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
-      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <rect x="34" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
-      <rect x="52" y="27" width="14" height="9" rx="4" fill="#1a1a1a" stroke="#FFD700" stroke-width="1.5"/>
-      <line x1="48" y1="31" x2="52" y2="31" stroke="#FFD700" stroke-width="1.5"/>
-      <line x1="30" y1="30" x2="34" y2="30" stroke="#FFD700" stroke-width="1.5"/>
-      <line x1="66" y1="30" x2="70" y2="30" stroke="#FFD700" stroke-width="1.5"/>
-      <ellipse cx="50" cy="16" rx="24" ry="5" fill="#f5c842"/>
-      <rect x="36" y="5" width="28" height="14" rx="4" fill="#f5c842"/>
-      <rect x="34" y="13" width="32" height="4" rx="2" fill="#ff8c00"/>
-    </svg>
-  </div>
-  <div class="proxy-box">
-    <h2>☀️ Summer Mode Unlocked!</h2>
-    <p>🌊 Enter a URL and surf the web freely 🏄</p>
-    <input type="text" id="proxy-url" placeholder="e.g. google.com" />
-    <div class="proxy-btns">
-      <button class="proxy-go" onclick="goProxy()">🏄 Surf</button>
-      <button class="proxy-close" onclick="closeProxy()">Close</button>
-    </div>
-    <div class="cloak-panel">
-      <h4>🎭 Tab Cloak — disguise this tab</h4>
-      <div class="cloak-options">
-        <button class="cloak-btn active" onclick="setCloak('Study Helper - Educational Resources','https://www.google.com/favicon.ico',this)">📚 Default</button>
-        <button class="cloak-btn" onclick="setCloak('Google','https://www.google.com/favicon.ico',this)">🔍 Google</button>
-        <button class="cloak-btn" onclick="setCloak('Khan Academy','https://cdn.kastatic.org/images/favicon.ico',this)">🎓 Khan Academy</button>
-        <button class="cloak-btn" onclick="setCloak('Google Classroom','https://ssl.gstatic.com/classroom/favicon.png',this)">🏫 Classroom</button>
-        <button class="cloak-btn" onclick="setCloak('Quizlet','https://quizlet.com/favicon.ico',this)">📝 Quizlet</button>
-        <button class="cloak-btn" onclick="setCloak('Duolingo','https://d35aaqx5ub95lt.cloudfront.net/favicon.ico',this)">🦜 Duolingo</button>
-        <button class="cloak-btn" onclick="setCloak('Wikipedia','https://en.wikipedia.org/favicon.ico',this)">📖 Wikipedia</button>
-      </div>
-      <div class="cloak-custom">
-        <input type="text" id="custom-cloak-title" placeholder="Custom tab title..." />
-        <button onclick="applyCustomCloak()">Apply</button>
-      </div>
-    </div>
-  </div>
-  <div class="waves"><div class="wave wave1"></div><div class="wave wave2"></div></div>
+<div class="tip" id="tip">💡 <b>Study Tip:</b> Use the calculator below to practice math. Try typing a number and press =</div>
+<!-- CALCULATOR - VISIBLE BY DEFAULT -->
+<div class="calc" id="calcBox">
+<div class="calc-d" id="calcDisplay">0</div>
+<div class="calc-g">
+<button class="calc-b clr" onclick="cClr()">C</button>
+<button class="calc-b" onclick="cIn('±')">±</button>
+<button class="calc-b" onclick="cIn('%')">%</button>
+<button class="calc-b op" onclick="cIn('/')">÷</button>
+<button class="calc-b" onclick="cIn('7')">7</button>
+<button class="calc-b" onclick="cIn('8')">8</button>
+<button class="calc-b" onclick="cIn('9')">9</button>
+<button class="calc-b op" onclick="cIn('*')">×</button>
+<button class="calc-b" onclick="cIn('4')">4</button>
+<button class="calc-b" onclick="cIn('5')">5</button>
+<button class="calc-b" onclick="cIn('6')">6</button>
+<button class="calc-b op" onclick="cIn('-')">−</button>
+<button class="calc-b" onclick="cIn('1')">1</button>
+<button class="calc-b" onclick="cIn('2')">2</button>
+<button class="calc-b" onclick="cIn('3')">3</button>
+<button class="calc-b op" onclick="cIn('+')">+</button>
+<button class="calc-b" onclick="cIn('0')">0</button>
+<button class="calc-b" onclick="cIn('.')">.</button>
+<button class="calc-b eq" onclick="cEq()">=</button>
 </div>
-
-<!-- HEADER -->
-<header>
-  <h1>📚 Study Helper</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Resources</a>
-    <a href="#">Tools</a>
-    <a href="#">Contact</a>
-  </nav>
-</header>
-
-<main>
-  <h2>🎄 Your Educational Resource Hub</h2>
-  <p class="subtitle">Search for study materials, tutorials, and more.</p>
-  <div class="xmas-banner">🎅 Happy Holidays from Study Helper! Wishing you a productive and joyful season. 🎁</div>
-
-  <!-- TUX + SEARCH -->
-  <div class="tux-container">
-    <div class="speech-bubble" id="speechBubble">Redirecting to the app site...</div>
-    <div class="easter-egg" id="easterEgg" title="Psst...">🥚</div>
-    <div class="easter-egg-msg" id="easterMsg">🐧 Tux says: Happy Hacking!</div>
-    <svg class="tux-svg" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="75" rx="30" ry="38" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="82" rx="18" ry="24" fill="#f5f0e0"/>
-      <ellipse cx="50" cy="36" rx="22" ry="22" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="38" rx="13" ry="12" fill="#f5c842"/>
-      <circle cx="44" cy="30" r="3.5" fill="white"/>
-      <circle cx="56" cy="30" r="3.5" fill="white"/>
-      <circle cx="45" cy="31" r="2" fill="#1a1a1a"/>
-      <circle cx="57" cy="31" r="2" fill="#1a1a1a"/>
-      <ellipse cx="50" cy="40" rx="6" ry="4" fill="#f5a623"/>
-      <ellipse cx="21" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(-10 21 78)"/>
-      <ellipse cx="79" cy="78" rx="10" ry="22" fill="#1a1a1a" transform="rotate(10 79 78)"/>
-      <ellipse cx="40" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <ellipse cx="60" cy="112" rx="12" ry="5" fill="#f5a623"/>
-      <polygon points="50,5 30,26 70,26" fill="#c0392b"/>
-      <rect x="28" y="24" width="44" height="7" rx="3" fill="white"/>
-      <circle cx="50" cy="5" r="5" fill="white"/>
-    </svg>
-  </div>
-
-  <form class="search-form" onsubmit="handleSearch(event)">
-    <input type="text" id="searchInput" placeholder="Enter a website or topic..." autocomplete="off"/>
-    <button type="submit">Go</button>
-  </form>
-
-  <div class="cards">
-    <div class="card"><h3>📖 Study Guides</h3><p>Access thousands of study guides across all subjects.</p></div>
-    <div class="card"><h3>🧮 Math Tools</h3><p>Calculators, graphing tools, and step-by-step solvers.</p></div>
-    <div class="card"><h3>🌍 Research Hub</h3><p>Find credible sources and citations for your projects.</p></div>
-  </div>
-
-  <!-- CALCULATOR -->
-  <div class="calc-section">
-    <h3>🧮 Calculator</h3>
-    <div class="calc-display" id="calc-display">0</div>
-    <div class="calc-grid">
-      <button class="calc-btn clr" onclick="calcClear()">C</button>
-      <button class="calc-btn op" onclick="calcInput('(')">(</button>
-      <button class="calc-btn op" onclick="calcInput(')')">)</button>
-      <button class="calc-btn op" onclick="calcInput('/')">÷</button>
-      <button class="calc-btn num" onclick="calcInput('7')">7</button>
-      <button class="calc-btn num" onclick="calcInput('8')">8</button>
-      <button class="calc-btn num" onclick="calcInput('9')">9</button>
-      <button class="calc-btn op" onclick="calcInput('*')">×</button>
-      <button class="calc-btn num" onclick="calcInput('4')">4</button>
-      <button class="calc-btn num" onclick="calcInput('5')">5</button>
-      <button class="calc-btn num" onclick="calcInput('6')">6</button>
-      <button class="calc-btn op" onclick="calcInput('-')">−</button>
-      <button class="calc-btn num" onclick="calcInput('1')">1</button>
-      <button class="calc-btn num" onclick="calcInput('2')">2</button>
-      <button class="calc-btn num" onclick="calcInput('3')">3</button>
-      <button class="calc-btn op" onclick="calcInput('+')">+</button>
-      <button class="calc-btn num" onclick="calcInput('0')" style="grid-column:span 2">0</button>
-      <button class="calc-btn num" onclick="calcInput('.')">.</button>
-      <button class="calc-btn eq" onclick="calcEquals()">=</button>
-    </div>
-  </div>
-
-  <!-- ===== MINESWEEPER ===== -->
-  <div class="ms-section">
-    <h3>💣 Logic Puzzle — Practice Your Deduction Skills!</h3>
-    <div class="ms-header">
-      <div class="ms-flag-count" id="ms-flags">🚩 10</div>
-      <div class="ms-status" id="ms-status">Click to start</div>
-      <button class="ms-reset" onclick="msInit()">🔄 New Game</button>
-    </div>
-    <div class="ms-board" id="ms-board"></div>
-    <div class="ms-diff">
-      <button class="active" onclick="msSetDifficulty('easy',this)">Easy (9×9)</button>
-      <button onclick="msSetDifficulty('medium',this)">Medium (12×12)</button>
-      <button onclick="msSetDifficulty('hard',this)">Hard (16×16)</button>
-    </div>
-  </div>
-
-  <!-- DEV AREA -->
-  <div class="dev-area">
-    <h3>🛠️ Developer Area</h3>
-    <textarea id="devCode" placeholder="// Write your code here...
-console.log('Hello, World!');"></textarea>
-    <div class="dev-btns">
-      <button onclick="runCode()">▶ Run</button>
-      <button onclick="clearCode()">🗑 Clear</button>
-      <button onclick="copyCode()">📋 Copy</button>
-    </div>
-    <div id="dev-output">// Output will appear here...</div>
-  </div>
-</main>
-
-<footer>© 2025 Study Helper — Educational Resources for Students</footer>
-
+</div>
+<div class="grid" id="grid">
+<div class="card" onclick="showSub('math')"><h3>📐 Math</h3><p>Algebra, Geometry, Calculus</p></div>
+<div class="card" onclick="showSub('science')"><h3>🧪 Science</h3><p>Physics, Chemistry, Biology</p></div>
+<div class="card" onclick="showSub('history')"><h3>📜 History</h3><p>Ancient, Modern, World</p></div>
+<div class="card" onclick="showSub('english')"><h3>📖 English</h3><p>Grammar, Literature, Writing</p></div>
+<div class="card" onclick="showSub('coding')"><h3>💻 Coding</h3><p>Python, JavaScript, HTML</p></div>
+<div class="card" onclick="calcScroll()"><h3>🧮 Calculator</h3><p>Practice your math skills!</p></div>
+</div>
+<!-- PROXY -->
+<div class="proxy" id="proxy">
+<h2>🎃 Ghost Games 🎃</h2>
+<div class="brand"><span>⚡ Powered by Ultraviolet</span><span>🛡️ Titanium Network</span></div>
+<div class="srch"><input type="text" id="pSearch" placeholder="Enter URL or search for a game..." onkeydown="if(event.key==='Enter')pGo()"><button onclick="pGo()">Go</button></div>
+<div class="ggrid" id="gGrid"></div>
+<iframe class="pframe" id="pFrame" src=""></iframe><br>
+<button class="pback" id="pBack" onclick="pClose()" style="display:none">⬅ Back to Games</button>
+</div>
+<!-- CHESS -->
+<div class="chess" id="chess">
+<h2>♟️ Spooky Chess ♟️</h2>
+<div class="cmode"><button class="act" id="botBtn" onclick="cMode('bot')">🤖 vs Bot</button><button id="mulBtn" onclick="cMode('multi')">👥 Multiplayer</button></div>
+<div class="cstat" id="cStat">White's turn</div>
+<div class="cboard" id="cBoard"></div>
+<div class="cctrl"><button onclick="cReset()">🔄 New Game</button><button onclick="cUndo()">↩️ Undo</button></div>
+<div class="slist" id="sList" style="display:none">
+<h4>🌍 Multiplayer Servers</h4>
+<div class="si"><span><span class="sdot on"></span>US-East — Spooky Castle</span><span>3 players</span></div>
+<div class="si"><span><span class="sdot on"></span>US-West — Ghost Town</span><span>5 players</span></div>
+<div class="si"><span><span class="sdot on"></span>EU-Central — Witch Hut</span><span>2 players</span></div>
+<div class="si"><span><span class="sdot off"></span>Asia — Haunted Temple</span><span>Offline</span></div>
+</div>
+</div>
+<!-- VPN -->
+<div class="vpn" id="vpnP">
+<h4>🔐 Ghost VPN</h4>
+<div><span class="vsw" id="vSw" onclick="vToggle()"></span><span class="vst" id="vSt">Disconnected</span></div>
+<select class="vsl" id="vReg"><option value="auto">🌍 Auto</option><option value="us">🇺🇸 US</option><option value="uk">🇬🇧 UK</option><option value="de">🇩🇪 Germany</option><option value="jp">🇯🇵 Japan</option></select>
+</div>
+<!-- PANIC -->
+<button class="panic" id="panic" onclick="panicGo()" oncontextmenu="pSettings(event)">PANIC</button>
+<div class="pmod" id="pMod"><div class="pmc"><h3>🚨 Panic Button Settings</h3><p>Set the redirect URL. Default: Wikipedia</p><input type="text" id="pUrl" placeholder="https://en.wikipedia.org"><br><button class="psave" onclick="pSave()">Save</button><button class="pcan" onclick="pCancel()">Cancel</button></div></div>
+<!-- EASTER EGG -->
+<div class="ovr" id="eOvr" onclick="eClose()"></div>
+<div class="egg" id="egg"><div class="sg">👻</div><h2>Boo! 🎃</h2><p>You found the hidden ghost!<br>Secret code: <b style="color:#ff7518;font-size:1.1rem">SPOOKY-2026</b><br>👻</p><button class="psave" onclick="eClose()">Close</button></div>
 <script>
-  // ==================== LOADING SCREEN ====================
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      document.getElementById('loading-screen').classList.add('hide');
-      setTimeout(() => document.getElementById('loading-screen').remove(), 900);
-    }, 2800);
-  });
-
-  // ==================== SNOWFLAKES ====================
-  (function() {
-    const sf = document.getElementById('snowflakes');
-    for (let i = 0; i < 28; i++) {
-      const s = document.createElement('div');
-      s.className = 'snowflake';
-      s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
-      s.style.left = Math.random()*100 + 'vw';
-      s.style.fontSize = (0.7 + Math.random()*1.1) + 'rem';
-      s.style.animationDuration = (4 + Math.random()*8) + 's';
-      s.style.animationDelay = (Math.random()*8) + 's';
-      sf.appendChild(s);
-    }
-  })();
-
-  // ==================== SEARCH ====================
-  function handleSearch(e) {
-    e.preventDefault();
-    const val = document.getElementById('searchInput').value.trim();
-    if (!val) return;
-    const bubble = document.getElementById('speechBubble');
-    bubble.classList.add('show');
-    setTimeout(() => bubble.classList.remove('show'), 3000);
-    let url = val.startsWith('http') ? val : 'https://' + val;
-    setTimeout(() => window.open(url, '_blank'), 1200);
-  }
-
-  // ==================== EASTER EGG ====================
-  document.getElementById('easterEgg').addEventListener('click', () => {
-    const msg = document.getElementById('easterMsg');
-    msg.classList.toggle('show');
-    setTimeout(() => msg.classList.remove('show'), 3000);
-  });
-
-  // ==================== CALCULATOR ====================
-  let calcVal = '';
-  function calcInput(val) {
-    if (calcVal === '0' && !isNaN(val)) calcVal = '';
-    calcVal += val;
-    document.getElementById('calc-display').textContent = calcVal;
-    if (calcVal.includes('2222')) {
-      calcVal = '';
-      document.getElementById('calc-display').textContent = '0';
-      setTimeout(() => document.getElementById('proxy-overlay').classList.add('show'), 300);
-    }
-  }
-  function calcClear() { calcVal = ''; document.getElementById('calc-display').textContent = '0'; }
-  function calcEquals() {
-    try { calcVal = String(eval(calcVal)); document.getElementById('calc-display').textContent = calcVal; }
-    catch(e) { document.getElementById('calc-display').textContent = 'Error'; calcVal = ''; }
-  }
-
-  // ==================== PROXY ====================
-  function goProxy() {
-    let url = document.getElementById('proxy-url').value.trim();
-    if (!url) return;
-    if (!url.startsWith('http')) url = 'https://' + url;
-    window.open(url, '_blank');
-  }
-  function closeProxy() {
-    document.getElementById('proxy-overlay').classList.remove('show');
-    document.getElementById('proxy-url').value = '';
-  }
-  document.getElementById('proxy-url').addEventListener('keydown', e => { if (e.key === 'Enter') goProxy(); });
-
-  // ==================== TAB CLOAK ====================
-  function setCloak(title, iconUrl, btn) {
-    document.title = title;
-    document.getElementById('tab-icon').href = iconUrl;
-    document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-  }
-  function applyCustomCloak() {
-    const title = document.getElementById('custom-cloak-title').value.trim();
-    if (!title) return;
-    setCloak(title, 'https://www.google.com/favicon.ico', null);
-    document.querySelectorAll('.cloak-btn').forEach(b => b.classList.remove('active'));
-  }
-
-  // ==================== MINESWEEPER ====================
-  const MS_CONFIGS = {
-    easy:   { rows: 9,  cols: 9,  mines: 10 },
-    medium: { rows: 12, cols: 12, mines: 25 },
-    hard:   { rows: 16, cols: 16, mines: 50 }
-  };
-  let msDiff = 'easy';
-  let msGrid = [];
-  let msRevealed = [];
-  let msFlagged = [];
-  let msGameOver = false;
-  let msWin = false;
-  let msFlagsLeft = 0;
-  let msFirstClick = true;
-
-  function msSetDifficulty(diff, btn) {
-    msDiff = diff;
-    document.querySelectorAll('.ms-diff button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    msInit();
-  }
-
-  function msInit() {
-    const cfg = MS_CONFIGS[msDiff];
-    msGrid = [];
-    msRevealed = [];
-    msFlagged = [];
-    msGameOver = false;
-    msWin = false;
-    msFirstClick = true;
-    msFlagsLeft = cfg.mines;
-
-    for (let r = 0; r < cfg.rows; r++) {
-      msGrid.push(new Array(cfg.cols).fill(0));
-      msRevealed.push(new Array(cfg.cols).fill(false));
-      msFlagged.push(new Array(cfg.cols).fill(false));
-    }
-
-    msRender();
-    document.getElementById('ms-status').textContent = 'Click to start';
-    document.getElementById('ms-status').style.color = '#a5d6a7';
-  }
-
-  function msPlaceMines(safeR, safeC) {
-    const cfg = MS_CONFIGS[msDiff];
-    let placed = 0;
-    while (placed < cfg.mines) {
-      const r = Math.floor(Math.random() * cfg.rows);
-      const c = Math.floor(Math.random() * cfg.cols);
-      // Don't place on safe cell or already mined
-      if (msGrid[r][c] === -1) continue;
-      if (Math.abs(r - safeR) <= 1 && Math.abs(c - safeC) <= 1) continue;
-      msGrid[r][c] = -1;
-      placed++;
-    }
-    // Calculate neighbor counts
-    for (let r = 0; r < cfg.rows; r++) {
-      for (let c = 0; c < cfg.cols; c++) {
-        if (msGrid[r][c] === -1) continue;
-        let count = 0;
-        for (let dr = -1; dr <= 1; dr++) {
-          for (let dc = -1; dc <= 1; dc++) {
-            if (dr === 0 && dc === 0) continue;
-            const nr = r + dr, nc = c + dc;
-            if (nr >= 0 && nr < cfg.rows && nc >= 0 && nc < cfg.cols && msGrid[nr][nc] === -1) count++;
-          }
-        }
-        msGrid[r][c] = count;
-      }
-    }
-  }
-
-  function msFloodReveal(r, c) {
-    const cfg = MS_CONFIGS[msDiff];
-    if (r < 0 || r >= cfg.rows || c < 0 || c >= cfg.cols) return;
-    if (msRevealed[r][c] || msFlagged[r][c]) return;
-    msRevealed[r][c] = true;
-    if (msGrid[r][c] === 0) {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue;
-          msFloodReveal(r + dr, c + dc);
-        }
-      }
-    }
-  }
-
-  function msCheckWin() {
-    const cfg = MS_CONFIGS[msDiff];
-    for (let r = 0; r < cfg.rows; r++) {
-      for (let c = 0; c < cfg.cols; c++) {
-        if (msGrid[r][c] !== -1 && !msRevealed[r][c]) return false;
-      }
-    }
-    return true;
-  }
-
-  function msReveal(r, c) {
-    if (msGameOver || msWin) return;
-    if (msFlagged[r][c] || msRevealed[r][c]) return;
-
-    if (msFirstClick) {
-      msPlaceMines(r, c);
-      msFirstClick = false;
-      document.getElementById('ms-status').textContent = '🟢 Playing...';
-    }
-
-    if (msGrid[r][c] === -1) {
-      msGameOver = true;
-      msRevealed[r][c] = true;
-      // Reveal all mines
-      const cfg = MS_CONFIGS[msDiff];
-      for (let rr = 0; rr < cfg.rows; rr++)
-        for (let cc = 0; cc < cfg.cols; cc++)
-          if (msGrid[rr][cc] === -1) msRevealed[rr][cc] = true;
-      msRender();
-      document.getElementById('ms-status').textContent = '💥 Game Over!';
-      document.getElementById('ms-status').style.color = '#ef5350';
-      return;
-    }
-
-    msFloodReveal(r, c);
-
-    if (msCheckWin()) {
-      msWin = true;
-      document.getElementById('ms-status').textContent = '🎉 You Win!';
-      document.getElementById('ms-status').style.color = '#66bb6a';
-    } else {
-      document.getElementById('ms-status').textContent = '🟢 Playing...';
-      document.getElementById('ms-status').style.color = '#a5d6a7';
-    }
-
-    msRender();
-  }
-
-  function msToggleFlag(r, c) {
-    if (msGameOver || msWin) return;
-    if (msRevealed[r][c]) return;
-    msFlagged[r][c] = !msFlagged[r][c];
-    msFlagsLeft += msFlagged[r][c] ? -1 : 1;
-    msRender();
-  }
-
-  function msRender() {
-    const cfg = MS_CONFIGS[msDiff];
-    const board = document.getElementById('ms-board');
-    board.innerHTML = '';
-    board.style.gridTemplateColumns = `repeat(${cfg.cols}, 32px)`;
-
-    for (let r = 0; r < cfg.rows; r++) {
-      for (let c = 0; c < cfg.cols; c++) {
-        const cell = document.createElement('button');
-        cell.className = 'ms-cell';
-        cell.style.width = '32px';
-        cell.style.height = '32px';
-
-        if (msRevealed[r][c]) {
-          cell.classList.add('revealed');
-          if (msGrid[r][c] === -1) {
-            cell.classList.add('mine');
-            cell.textContent = '💣';
-          } else if (msGrid[r][c] > 0) {
-            cell.innerHTML = `<span class="n${msGrid[r][c]}">${msGrid[r][c]}</span>`;
-          }
-        } else if (msFlagged[r][c]) {
-          cell.classList.add('flagged');
-          cell.textContent = '🚩';
-        }
-
-        cell.addEventListener('click', (e) => {
-          e.preventDefault();
-          msReveal(r, c);
-        });
-        cell.addEventListener('contextmenu', (e) => {
-          e.preventDefault();
-          msToggleFlag(r, c);
-        });
-
-        board.appendChild(cell);
-      }
-    }
-
-    document.getElementById('ms-flags').textContent = `🚩 ${msFlagsLeft}`;
-  }
-
-  // Init Minesweeper on load
-  msInit();
-
-  // ==================== DEV AREA ====================
-  function runCode() {
-    const code = document.getElementById('devCode').value;
-    const out = document.getElementById('dev-output');
-    const logs = [];
-    const origLog = console.log;
-    console.log = (...args) => logs.push(args.join(' '));
-    try { eval(code); out.textContent = logs.length ? logs.join('\n') : '// No output'; }
-    catch(e) { out.textContent = '❌ Error: ' + e.message; }
-    console.log = origLog;
-  }
-  function clearCode() { document.getElementById('devCode').value = ''; document.getElementById('dev-output').textContent = '// Output will appear here...'; }
-  function copyCode() { navigator.clipboard.writeText(document.getElementById('devCode').value).then(() => alert('Code copied!')); }
+/* CALCULATOR */
+let cC='0',cP='',cO='';
+function cUp(){document.getElementById('calcDisplay').textContent=cC;if(cC==='2222'){revealProxy()}}
+function cIn(v){if(['+','-','*','/','%'].includes(v)){if(cO&&cP)cEq();cP=cC;cO=v;cC='0'}else if(v==='±'){cC=String(parseFloat(cC)*-1);cUp()}else if(v==='.'){if(!cC.includes('.'))cC+='.';cUp()}else{if(cC==='0')cC=v;else cC+=v;cUp()}}
+function cEq(){let r;const a=parseFloat(cP),b=parseFloat(cC);switch(cO){case'+':r=a+b;break;case'-':r=a-b;break;case'*':r=a*b;break;case'/':r=b!==0?a/b:'Error';break;default:r=cC}cC=String(r);cP='';cO='';cUp()}
+function cClr(){cC='0';cP='';cO='';cUp()}
+function calcScroll(){document.getElementById('calcBox').scrollIntoView({behavior:'smooth'})}
+function showSub(s){if(s==='calculator'){calcScroll()}else{const m={math:'📐 Mathematics — Practice algebra, geometry, and calculus!',science:'🧪 Science — Explore physics, chemistry, and biology!',history:'📜 History — Journey through ancient and modern times!',english:'📖 English — Master grammar, literature, and writing!',coding:'💻 Coding — Learn Python, JavaScript, and more!'};alert(m[s]||'Coming soon!')}}
+/* REVEAL PROXY (2222) */
+function revealProxy(){document.body.classList.remove('study');document.body.classList.add('hw');document.getElementById('logoIcon').textContent='🎃';document.getElementById('logoText').textContent='Ghost Hub';document.getElementById('title').textContent='🎃 Ghost Games 🎃';document.getElementById('subtitle').textContent='Unblocked games powered by Ultraviolet & Titanium Network';document.getElementById('tip').style.display='none';document.getElementById('grid').style.display='none';document.getElementById('calcBox').style.display='none';document.getElementById('proxy').classList.add('on');loadGames();const nl=document.querySelectorAll('#navLinks a');const lbl=['🏠 Home','🎮 Games','♟️ Chess','🔒 VPN','📚 Study'];const act=['home','games','chess','vpn','study'];nl.forEach((a,i)=>{if(lbl[i]){a.textContent=lbl[i];a.onclick=()=>navTo(act[i])}})}
+function navTo(p){if(p==='home'||p==='games'){document.getElementById('proxy').classList.add('on');document.getElementById('chess').classList.remove('on')}else if(p==='chess'){document.getElementById('proxy').classList.remove('on');document.getElementById('chess').classList.add('on')}else if(p==='vpn'){document.getElementById('vpnP').style.display='block'}else if(p==='study'){revert()}}
+function revert(){document.body.classList.remove('hw');document.body.classList.add('study');document.getElementById('logoIcon').textContent='📚';document.getElementById('logoText').textContent='StudyHub';document.getElementById('title').textContent='Welcome to StudyHub';document.getElementById('subtitle').textContent='Your one-stop platform for online learning.';document.getElementById('tip').style.display='block';document.getElementById('grid').style.display='grid';document.getElementById('calcBox').style.display='block';document.getElementById('proxy').classList.remove('on');document.getElementById('chess').classList.remove('on')}
+/* GAMES */
+const games=[{n:'Chess',i:'♟️',d:'vs bot or friends',a:'chess'},{n:'2048',i:'🔢',d:'Merge tiles',u:'https://play2048.co'},{n:'Tetris',i:'🟦',d:'Block puzzle',u:'https://tetris.com'},{n:'Snake',i:'🐍',d:'Eat and grow',u:'https://playsnake.org'},{n:'Flappy Bird',i:'🐦',d:'Tap to fly',u:'https://flappybird.io'},{n:'Pacman',i:'🟡',d:'Classic arcade',u:'https://pacman.com'},{n:'Sudoku',i:'📊',d:'Number puzzle',u:'https://sudoku.com'},{n:'Minesweeper',i:'💣',d:'Strategy',u:'https://minesweeperonline.com'},{n:'Tic-Tac-Toe',i:'❌',d:'Quick fun',u:'https://ttt.com'},{n:'Racing',i:'🏎️',d:'Speed racing',u:'https://racinggames.io'},{n:'Tower Defense',i:'🏰',d:'Defend base',u:'https://towerdefense.com'},{n:'Platformer',i:'🏃',d:'Jump and run',u:'https://platformer.io'}];
+function loadGames(){document.getElementById('gGrid').innerHTML=games.map(g=>`<div class="gc" onclick="${g.a==='chess'?'openChess()':`pOpen('${g.u}')`}"><div class="ic">${g.i}</div><h4>${g.n}</h4><p>${g.d}</p></div>`).join('')}
+function pOpen(u){document.getElementById('pFrame').src=u;document.getElementById('pFrame').classList.add('on');document.getElementById('pBack').style.display='inline-block';document.getElementById('gGrid').style.display='none'}
+function pClose(){document.getElementById('pFrame').src='';document.getElementById('pFrame').classList.remove('on');document.getElementById('pBack').style.display='none';document.getElementById('gGrid').style.display='grid'}
+function pGo(){let q=document.getElementById('pSearch').value.trim();if(!q)return;if(!q.startsWith('http'))q='https://'+q;pOpen(q)}
+/* CHESS */
+const P={wK:'♔',wQ:'♕',wR:'♖',wB:'♗',wN:'♘',wP:'♙',bK:'♚',bQ:'♛',bR:'♜',bB:'♝',bN:'♞',bP:'♟'};
+let cb=[],sel=null,turn='w',mode='bot',hist=[];
+function cInit(){cb=[['bR','bN','bB','bQ','bK','bB','bN','bR'],['bP','bP','bP','bP','bP','bP','bP','bP'],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],[null,null,null,null,null,null,null,null],['wP','wP','wP','wP','wP','wP','wP','wP'],['wR','wN','wB','wQ','wK','wB','wN','wR']];sel=null;turn='w';hist=[];cRender();cStatus()}
+function cRender(){const b=document.getElementById('cBoard');b.innerHTML='';for(let r=0;r<8;r++)for(let c=0;c<8;c++){const s=document.createElement('div');s.className='csq '+((r+c)%2===0?'l':'d');if(sel&&sel[0]===r&&sel[1]===c)s.classList.add('sel');const p=cb[r][c];if(p)s.textContent=P[p];s.onclick=()=>cClick(r,c);b.appendChild(s)}}
+function cClick(r,c){const p=cb[r][c];if(sel){const[sr,sc]=sel;if(cValid(sr,sc,r,c)){cMove(sr,sc,r,c);sel=null;cRender();if(mode==='bot'&&turn==='b')setTimeout(botMv,500);return}sel=null;cRender()}if(p&&p[0]===turn){sel=[r,c];cRender()}}
+function cValid(sr,sc,tr,tc){if(sr===tr&&sc===tc)return false;const p=cb[sr][sc];if(!p||p[0]!==turn)return false;const t=cb[tr][tc];if(t&&t[0]===turn)return false;const ty=p[1],dr=tr-sr,dc=tc-sc;switch(ty){case'P':const dir=p[0]==='w'?-1:1;if(dc===0&&!t){if(dr===dir)return true;if((p[0]==='w'&&sr===6||p[0]==='b'&&sr===1)&&dr===2*dir&&!cb[sr+dir][sc])return true}if(Math.abs(dc)===1&&dr===dir&&t)return true;return false;case'R':if(dr!==0&&dc!==0)return false;return cPath(sr,sc,tr,tc);case'B':if(Math.abs(dr)!==Math.abs(dc)||dr===0)return false;return cPath(sr,sc,tr,tc);case'Q':if(dr===0||dc===0||Math.abs(dr)===Math.abs(dc))return cPath(sr,sc,tr,tc);return false;case'N':return(Math.abs(dr)===2&&Math.abs(dc)===1)||(Math.abs(dr)===1&&Math.abs(dc)===2);case'K':return Math.abs(dr)<=1&&Math.abs(dc)<=1}return false}
+function cPath(sr,sc,tr,tc){const dr=Math.sign(tr-sr),dc=Math.sign(tc-sc);let r=sr+dr,c=sc+dc;while(r!==tr||c!==tc){if(cb[r][c])return false;r+=dr;c+=dc}return true}
+function cMove(sr,sc,tr,tc){hist.push(JSON.parse(JSON.stringify(cb)));const p=cb[sr][sc];cb[tr][tc]=p;cb[sr][sc]=null;if(p[1]==='P'&&(tr===0||tr===7))cb[tr][tc]=p[0]+'Q';turn=turn==='w'?'b':'w';cStatus();let hk=false;for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(cb[r][c]&&cb[r][c][1]==='K'&&cb[r][c][0]===turn)hk=true;if(!hk)document.getElementById('cStat').textContent=`🎉 ${turn==='w'?'Black':'White'} wins!`}
+function botMv(){const m=[];for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=cb[r][c];if(p&&p[0]==='b'){for(let tr=0;tr<8;tr++)for(let tc=0;tc<8;tc++){if(cValid(r,c,tr,tc)){const t=cb[tr][tc];let s=Math.random();if(t){const v={P:1,N:3,B:3,R:5,Q:9,K:100};s+=v[t[1]]||0}m.push({sr:r,sc:c,tr,tc,s})}}}}if(!m.length){document.getElementById('cStat').textContent='🎉 White wins!';return}m.sort((a,b)=>b.s-a.s);const pick=m[Math.floor(Math.random()*Math.min(3,m.length))];cMove(pick.sr,pick.sc,pick.tr,pick.tc);cRender()}
+function cStatus(){document.getElementById('cStat').textContent=turn==='w'?"White's turn":mode==='bot'?'Bot is thinking...':"Black's turn"}
+function cMode(m){mode=m;document.getElementById('botBtn').classList.toggle('act',m==='bot');document.getElementById('mulBtn').classList.toggle('act',m==='multi');document.getElementById('sList').style.display=m==='multi'?'block':'none';cInit()}
+function cReset(){cInit()}
+function cUndo(){if(hist.length>0){cb=hist.pop();turn=turn==='w'?'b':'w';cRender();cStatus()}}
+function openChess(){document.getElementById('proxy').classList.remove('on');document.getElementById('chess').classList.add('on');cInit()}
+/* VPN */
+function vToggle(){const sw=document.getElementById('vSw'),st=document.getElementById('vSt');const on=!sw.classList.contains('on');sw.classList.toggle('on',on);st.textContent=on?'Connected ✓':'Disconnected';st.classList.toggle('on',on)}
+/* PANIC */
+let pUrl='https://en.wikipedia.org';
+function panicGo(){window.location.href=pUrl}
+function pSettings(e){e.preventDefault();document.getElementById('pUrl').value=pUrl;document.getElementById('pMod').classList.add('on')}
+function pCancel(){document.getElementById('pMod').classList.remove('on')}
+function pSave(){let u=document.getElementById('pUrl').value.trim();if(!u)u='https://en.wikipedia.org';if(!u.startsWith('http'))u='https://'+u;pUrl=u;pCancel();const b=document.getElementById('panic');b.textContent='SAVED!';setTimeout(()=>b.textContent='PANIC',1500)}
+/* EASTER EGG */
+let gClicks=0;document.getElementById('ghost').addEventListener('click',()=>{gClicks++;if(gClicks>=5){document.getElementById('eOvr').classList.add('on');document.getElementById('egg').classList.add('on');gClicks=0}});
+function eClose(){document.getElementById('eOvr').classList.remove('on');document.getElementById('egg').classList.remove('on')}
+/* KEYBOARD */
+document.addEventListener('keydown',e=>{if(e.key==='Escape')panicGo()});
+/* INIT */
+cInit();
 </script>
 </body>
 </html>
